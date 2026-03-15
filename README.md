@@ -4,7 +4,7 @@
 
 **Team Number: 11**
 
-**Team Name: B.A.T.R.A.**
+**Team Name: B.A.T.R.A. (Balance Automated Two-axis Rotational Assembly)**
 
 | Team Member Name | Email Address                                          |
 | ---------------- | ------------------------------------------------------ |
