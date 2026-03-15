@@ -96,6 +96,8 @@ The hardware forms the physical construction and ontrol of B.A.T.R.A. The sensor
 | Mechanical        | 2-Axis Gimbal Frame                    | Custom / 3D Printed | N/A                            | N/A              | N/A                    | N/A         | $10.00          | N/A                                                                                                                                          | Provides pitch and roll axes    |
 | Mechanical        | Camera Mount Plate                     | Custom / 3D Printed | N/A                            | N/A              | N/A                    | N/A         | $5.00           | N/A                                                                                                                                          | Holds camera payload            |
 
+Link to google sheet BOM: [here](https://docs.google.com/spreadsheets/d/1fepphumKk5D9FUeKqcSwMe_T4UKh1L_EezRMtACb3O0/edit?usp=sharing)
+
 ### 8. Final Demo Goals
 
 On demo day, B.A.T.R.A. will be demonstrated as a handheld two-axis stabilized camera platform. The gimbal assembly will be mounted to a small handle so that one team member can manually shift the angle by tilting and rotating the device while the stabilization system actively compensates to keep the camera level.
