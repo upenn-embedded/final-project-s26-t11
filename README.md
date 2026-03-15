@@ -59,18 +59,24 @@ The software for B.A.T.R.A. is responsible for reading sensor data, running the 
 
 ### 6. Hardware Requirements Specification (HRS)
 
+The hardware forms the physical construction and ontrol of B.A.T.R.A. The sensors, frame, power system, switches, motors, bearings, and user-interface components provide functionality to the software. 
+
 **6.1 Definitions, Abbreviations**
 
-Here, you will define any special terms, acronyms, or abbreviations you plan to use for hardware
+* Servo - A servo motor with an integrted gearbox that is controlled via PWM signal communication
+* LDO - Low-Dropout Regulator (A voltage regulator with a low dropout)
+* DOF - Degrees of Freedom
 
 **6.2 Functionality**
 
-| ID     | Description                                                                                                                        |
-| ------ | ---------------------------------------------------------------------------------------------------------------------------------- |
-| HRS-01 | A distance sensor shall be used for obstacle detection. The sensor shall detect obstacles at a maximum distance of at least 10 cm. |
-| HRS-02 | A noisemaker shall be inside the trap with a strength of at least 55 dB.                                                           |
-| HRS-03 | An electronic motor shall be used to reset the trap remotely and have a torque of 40 Nm in order to reset the trap mechanism.      |
-| HRS-04 | A camera sensor shall be used to capture images of the trap interior. The resolution shall be at least 480p.                       |
+| ID     | Description                                                                                                                                  |
+| ------ | -------------------------------------------------------------------------------------------------------------------------------------------- |
+| HRS-01 | The system shall use two metal gear servoces like MG90S each providing at least 1.8 kg-cm of torque.                                         |
+| HRS-02 | The mechanical frame shall provide two independent rotational axes (roll and pitch) with at least +/- 30 degrees of rotation on each axis.   |
+| HRS-03 | An IMU shall communicate with ATmega328PB over I2C to provide 16-bit acceleration and gyroscope data.                                        |
+| HRS-04 | The balanced platform shall support a camera of at least 30 grams without degraded performance.                                              |
+| HRS-05 | The system shall be powered by 4 AA batteries with a regulated 5V rail for logic components and shall operate for at least 30 minutes.       |
+| HRS-06 | The joystick shall provide two analog voltage output readable by the ATmega328PB ADC channels. A separate buton shall control mode switches. |
 
 ### 7. Bill of Materials (BOM)
 
