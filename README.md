@@ -26,9 +26,11 @@ B.A.T.R.A. is an automated two-axis IMU-stabilized camera gimble with joystick c
 
 Any time you watch a smooth aerial drone shot, use a handheld camera without a nauseating shake, or watch a robot navigate a warehouse, there is some kind of video stabilization system working behind the scences. Video stabilization was always essential for high quality videos or movies, but now it has become crucial for computer vision applications where stable video makes consistent object detection possible.
 
-Although video gimbals aren't a nieche topic, the process of desiging a gimbal is very application specific and tackles the core challenge of decreasing the noise in input data.
+Although video gimbals aren't a niche topic, the process of desiging a gimbal is very application specific and tackles the core challenge of decreasing the noise in input data.
 
 ### 3. System Block Diagram
+
+![Block Diagram](./B.A.T.R.A.%20System%20Block%20Diagram.png)
 
 ### 4. Design Sketches
 
@@ -59,7 +61,7 @@ The software for B.A.T.R.A. is responsible for reading sensor data, running the 
 
 ### 6. Hardware Requirements Specification (HRS)
 
-The hardware forms the physical construction and ontrol of B.A.T.R.A. The sensors, frame, power system, switches, motors, bearings, and user-interface components provide functionality to the software. 
+The hardware forms the physical construction and ontrol of B.A.T.R.A. The sensors, frame, power system, switches, motors, bearings, and user-interface components provide functionality to the software.
 
 **6.1 Definitions, Abbreviations**
 
@@ -80,7 +82,35 @@ The hardware forms the physical construction and ontrol of B.A.T.R.A. The sensor
 
 ### 7. Bill of Materials (BOM)
 
+| Part Role         | Part Description                       | Manufacturer        | Manufacturer Part Number (MPN) | Interface to MCU | MCU Pins Assigned      | Distributor | Cost per device | URL                                                                                                                                          | Comments                        |
+| ----------------- | -------------------------------------- | ------------------- | ------------------------------ | ---------------- | ---------------------- | ----------- | --------------- | -------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------- |
+| Processor         | Main Processor Development Board       | Microchip           | ATmega328PB Xplained Mini      | N/A              | N/A                    | Microchip   | $0              | [https://www.microchip.com/en-us/development-tool/ATMEGA328PB-XMINI](https://www.microchip.com/en-us/development-tool/ATMEGA328PB-XMINI)     | Included in ESE3500 kit         |
+| Sensor (Input)    | 6-Axis IMU (Accelerometer + Gyroscope) | TDK InvenSense      | MPU-6050                       | I2C              | PC4 (SDA), PC5 (SCL)   | Adafruit    | $6.95           | [https://www.adafruit.com/product/3886](https://www.adafruit.com/product/3886)                                                               | Provides pitch/roll motion data |
+| User Input        | 2-Axis Analog Joystick Module          | Generic             | KY-023                         | ADC              | PC0 (ADC0), PC1 (ADC1) | Amazon      | $4.00           | [https://www.amazon.com/dp/B07BQGH8CL](https://www.amazon.com/dp/B07BQGH8CL)                                                                 | Controls camera viewing angle   |
+| User Input        | Mode Select Button                     | Generic             | Momentary Pushbutton           | GPIO             | PD3                    | DigiKey     | $0.50           | [https://www.digikey.com](https://www.digikey.com)                                                                                           | Used to switch operating modes  |
+| Actuator (Output) | Metal Gear Micro Servo Motor (Pitch)   | TowerPro            | MG90S                          | PWM              | PD5 (OC0B)             | Amazon      | $5.00           | [https://www.amazon.com/dp/B07Q7ZH4C8](https://www.amazon.com/dp/B07Q7ZH4C8)                                                                 | Controls pitch axis             |
+| Actuator (Output) | Metal Gear Micro Servo Motor (Roll)    | TowerPro            | MG90S                          | PWM              | PD6 (OC0A)             | Amazon      | $5.00           | [https://www.amazon.com/dp/B07Q7ZH4C8](https://www.amazon.com/dp/B07Q7ZH4C8)                                                                 | Controls roll axis              |
+| Power             | AA Battery Holder (4xAA)               | Keystone            | 2460                           | N/A              | N/A                    | DigiKey     | $3.00           | [https://www.digikey.com/en/products/detail/keystone-electronics/2460](https://www.digikey.com/en/products/detail/keystone-electronics/2460) | Provides system power           |
+| Power             | AA Batteries                           | Duracell            | MN1500                         | N/A              | N/A                    | Amazon      | $6.00           | [https://www.amazon.com](https://www.amazon.com)                                                                                             | Primary system power source     |
+| Power Regulation  | 5V Buck Converter Module               | Pololu              | D24V5F5                        | Power            | N/A                    | Pololu      | $5.95           | [https://www.pololu.com/product/2851](https://www.pololu.com/product/2851)                                                                   | Provides regulated 5V rail      |
+| Mechanical        | 2-Axis Gimbal Frame                    | Custom / 3D Printed | N/A                            | N/A              | N/A                    | N/A         | $10.00          | N/A                                                                                                                                          | Provides pitch and roll axes    |
+| Mechanical        | Camera Mount Plate                     | Custom / 3D Printed | N/A                            | N/A              | N/A                    | N/A         | $5.00           | N/A                                                                                                                                          | Holds camera payload            |
+
 ### 8. Final Demo Goals
+
+On demo day, B.A.T.R.A. will be demonstrated as a handheld two-axis stabilized camera platform. The gimbal assembly will be mounted to a small handle so that one team member can manually shift the angle by tilting and rotating the device while the stabilization system actively compensates to keep the camera level.
+
+During the demonstration, the system will be operated in two modes:
+
+**Stabilized Hold Mode:**  
+The gimbal will maintain the current pitch and roll orientation even when the user tilts the base by up to 15 degrees. This will demonstrate the IMU-based stabilization and PID control loop rejecting disturbances.
+
+**Joystick Control Mode:**  
+The analog joystick will allow the user to adjust the desired viewing angle of the camera while stabilization remains active. The camera will smoothly move to the new commanded pitch and roll angles while continuing to reject disturbances.
+
+The demo will take place indoors on a tabletop and does not require outdoor space. The system will be powered by a battery pack, allowing it to operate without external power during the demonstration.
+
+To visually verify stabilization performance, a small camera (or weighted payload representing a camera) will be mounted to the gimbal. The stabilization will be demonstrated by manually rotating the base platform and showing that the camera mount remains approximately level relative to gravity.
 
 ### 9. Sprint Planning
 
