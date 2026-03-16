@@ -34,6 +34,9 @@ Although video gimbals aren't a niche topic, the process of desiging a gimbal is
 
 ### 4. Design Sketches
 
+![Pic1](./pic1.png)
+![Pic1](./pic2.png)
+
 ### 5. Software Requirements Specification (SRS)
 
 The software for B.A.T.R.A. is responsible for reading sensor data, running the stabilization control loop, processing user input on the joy stick, and driving the servo motor output. All of this is meant to be done in real time on an ATmega328PB running bare metal C.
@@ -118,7 +121,7 @@ To visually verify stabilization performance, a small camera (or weighted payloa
 
 | Milestone  | Functionality Achieved | Distribution of Work |
 | ---------- | ---------------------- | -------------------- |
-| Sprint #1  |                        |                      |
+| Sprint #1  | We want to finish the software that allows us to calculate the needed rotation on the servos. We want to have the peripherals connected to the controller in order to check preliminary activity and movement of the servos as the pitch and the roll of the handle changes. |                      |
 | Sprint #2  |                        |                      |
 | MVP Demo   |                        |                      |
 | Final Demo |                        |                      |
