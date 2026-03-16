@@ -77,7 +77,7 @@ The hardware forms the physical construction and ontrol of B.A.T.R.A. The sensor
 
 | ID     | Description                                                                                                                                  |
 | ------ | -------------------------------------------------------------------------------------------------------------------------------------------- |
-| HRS-01 | The system shall use two metal gear servoces like MG90S each providing at least 1.8 kg-cm of torque.                                         |
+| HRS-01 | The system shall use two metal gear servos like MG90S each providing at least 1.8 kg-cm of torque.                                         |
 | HRS-02 | The mechanical frame shall provide two independent rotational axes (roll and pitch) with at least +/- 30 degrees of rotation on each axis.   |
 | HRS-03 | An IMU shall communicate with ATmega328PB over I2C to provide 16-bit acceleration and gyroscope data.                                        |
 | HRS-04 | The balanced platform shall support a camera of at least 30 grams without degraded performance.                                              |
