@@ -34,8 +34,8 @@ Although video gimbals aren't a niche topic, the process of desiging a gimbal is
 
 ### 4. Design Sketches
 
-![Pic1](./pic1.png)
-![Pic1](./pic2.png)
+![Pic1](./pic1.jpg)
+![Pic1](./pic2.jpg)
 
 ### 5. Software Requirements Specification (SRS)
 
