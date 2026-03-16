@@ -83,6 +83,7 @@ The hardware forms the physical construction and ontrol of B.A.T.R.A. The sensor
 | HRS-04 | The balanced platform shall support a camera of at least 30 grams without degraded performance.                                              |
 | HRS-05 | The system shall be powered by 4 AA batteries with a regulated 5V rail for logic components and shall operate for at least 30 minutes.       |
 | HRS-06 | The joystick shall provide two analog voltage output readable by the ATmega328PB ADC channels. A separate buton shall control mode switches. |
+| HRS-07 | The system shall support an ESP32 with 3.3V supply communicating with ATmega328PB over UART.                                                 |
 
 ### 7. Bill of Materials (BOM)
 
