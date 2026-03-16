@@ -95,7 +95,7 @@ Link to google sheet BOM: [here](https://docs.google.com/spreadsheets/d/1fepphum
 
 On demo day, B.A.T.R.A. will be demonstrated as a handheld two-axis stabilized camera platform. The gimbal assembly will be mounted to a small handle so that one team member can manually shift the angle by tilting and rotating the device while the stabilization system actively compensates to keep the camera level.
 
-During the demonstration, the system will be operated in two modes:
+During the demonstration, the system will be operated in two modes through both hardware (joystick and button) as well as through remote control:
 
 **Stabilized Hold Mode:**
 The gimbal will maintain the current pitch and roll orientation even when the user tilts the base by up to 15 degrees. This will demonstrate the IMU-based stabilization and PID control loop rejecting disturbances.
