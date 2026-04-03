@@ -134,9 +134,9 @@ The hardware seems to be mostly working at this point in time. We are planning o
 
 We have a decent amount of work to do in relation to the mechnical design of the project. We need to finish ordering parts, designing an enclosure for our MCUs, and figuring out which camera we want to use within our already CAD-ded enclosure. This will be a big focus for two of our team members.
 
-![](.\image.png)
+![1775258118874](image/README/1775258118874.png)
 
-![](.\IMG_1208.jpeg)
+![1775258134190](image/README/1775258134190.jpg)
 
 ### Next week's plan
 
