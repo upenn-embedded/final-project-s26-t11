@@ -124,7 +124,7 @@ We completed the sprint review with Aarti on 4/3 at 11:15 AM!
 
 ### Last week's progress
 
-We designed quick CAD files meant for some basic servos that we found in Detkin. This will serve as a proof of concept to allow one of our members to focus on the PID algorithm while the other members focus on mechanical design and the web-based functionality. We also designed some basic CAD files for the actual gimbal, and will resize the enclosure depending on the final camera with that we choose for the MVP and final product.
+We made a small 2-axis gimbal with some servos from Detkin. This gimbal setup will serve as a proof of concept to allow one of our members to focus on the PID algorithm/tuning while the other members focus on mechanical design and the web-based functionality. We also designed some basic CAD files for the actual gimbal, and will resize the enclosure depending on the final camera with that we choose for the MVP and final product.
 
 ### Current state of project
 
@@ -134,7 +134,7 @@ The hardware seems to be mostly working at this point in time. We are planning o
 
 We have a decent amount of work to do in relation to the mechnical design of the project. We need to finish ordering parts, designing an enclosure for our MCUs, and figuring out which camera we want to use within our already CAD-ded enclosure. This will be a big focus for two of our team members.
 
-![1775258118874](image/README/1775258118874.png)
+![1775259451850](image/README/1775259451850.png)
 
 ![1775258134190](image/README/1775258134190.jpg)
 
