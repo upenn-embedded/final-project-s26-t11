@@ -134,6 +134,10 @@ The hardware seems to be mostly working at this point in time. We are planning o
 
 We have a decent amount of work to do in relation to the mechnical design of the project. We need to finish ordering parts, designing an enclosure for our MCUs, and figuring out which camera we want to use within our already CAD-ded enclosure. This will be a big focus for two of our team members.
 
+![ejbnefi](.\image.png)
+
+![work](.\IMG_1208.jpeg)
+
 ### Next week's plan
 
 Max: Work on tuning the PID algorithm and get a working version complete with an IMU and a Go-Pro camera.
