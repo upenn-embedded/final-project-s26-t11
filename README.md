@@ -120,11 +120,27 @@ To visually verify stabilization performance, a small camera (or weighted payloa
 
 ## Sprint Review #1
 
+We completed the sprint review with Aarti on 4/3 at 11:15 AM!
+
 ### Last week's progress
+
+We designed quick CAD files meant for some basic servos that we found in Detkin. This will serve as a proof of concept to allow one of our members to focus on the PID algorithm while the other members focus on mechanical design and the web-based functionality. We also designed some basic CAD files for the actual gimbal, and will resize the enclosure depending on the final camera with that we choose for the MVP and final product.
 
 ### Current state of project
 
+From a software perspective, we have a lot of work in regards to designing the PID algorithm and the web application for the virtual control. That will be the main focus going forward into the next week.
+
+The hardware seems to be mostly working at this point in time. We are planning on just normally using the ATMega and the ESP32, without too much in the way of complex schematic design or wiring.
+
+We have a decent amount of work to do in relation to the mechnical design of the project. We need to finish ordering parts, designing an enclosure for our MCUs, and figuring out which camera we want to use within our already CAD-ded enclosure. This will be a big focus for two of our team members.
+
 ### Next week's plan
+
+Max: Work on tuning the PID algorithm and get a working version complete with an IMU and a Go-Pro camera.
+
+Ishan: Work on the web based functionality and have it work with the currently printed PID tester.
+
+Eugene: Focus on mechanical design through CAD of an MCU enclosure and finalize parts for mechanical design.
 
 ## Sprint Review #2
 
