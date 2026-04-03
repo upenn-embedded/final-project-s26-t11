@@ -26,7 +26,7 @@ B.A.T.R.A. is an automated two-axis IMU-stabilized camera gimbal with joystick c
 
 Any time you watch a smooth aerial drone shot, use a handheld camera without a nauseating shake, or watch a robot navigate a warehouse, there is some kind of video stabilization system working behind the scences. Video stabilization was always essential for high quality videos or movies, but now it has become crucial for computer vision applications where stable video makes consistent object detection possible.
 
-Although video gimbals aren't a niche topic, the process of desiging a gimbal is very application specific and tackles the core challenge of decreasing the noise in input data. By also instituting remote control with our project, we allow this mechanism to be potentially extended in applications involving autonomous vehicles and drones. 
+Although video gimbals aren't a niche topic, the process of desiging a gimbal is very application specific and tackles the core challenge of decreasing the noise in input data. By also instituting remote control with our project, we allow this mechanism to be potentially extended in applications involving autonomous vehicles and drones.
 
 ### 3. System Block Diagram
 
@@ -39,7 +39,7 @@ Although video gimbals aren't a niche topic, the process of desiging a gimbal is
 
 ### 5. Software Requirements Specification (SRS)
 
-The software for B.A.T.R.A. is responsible for reading sensor data, running the stabilization control loop, processing user input on the joy stick, and driving the servo motor output. All of this is meant to be done in real time on an ATmega328PB running bare metal C. We also have an ESP32 Wi-Fi module which allows for wireless communication with a device running a web application to remotely control the orientation of the camera. 
+The software for B.A.T.R.A. is responsible for reading sensor data, running the stabilization control loop, processing user input on the joy stick, and driving the servo motor output. All of this is meant to be done in real time on an ATmega328PB running bare metal C. We also have an ESP32 Wi-Fi module which allows for wireless communication with a device running a web application to remotely control the orientation of the camera.
 
 **5.1 Definitions, Abbreviations**
 
@@ -60,7 +60,7 @@ The software for B.A.T.R.A. is responsible for reading sensor data, running the 
 | SRS-04 | The firmware shall generate the PWM signals for the two servo motors with PWM ranges from 1 ms to 2 ms, corresponding to the angular range of the servo motors.                                                                                                                                                                                   |
 | SRS-05 | The firmware shall support two operating modes. One mode is a stabilized hold where the current pitch and roll angles are maintained, and the other mode is where a joystick is used sets the desired stabilization angle<br />(and thus the camera position can be controlled from the joystick). The modes can be selected using a mode button. |
 | SRS-06 | When the mode select button is held for at least 1 second, the firmware shall level out the platform within 2 seconds.                                                                                                                                                                                                                            |
-| SRS-07 | The stabilization firmware shall reject any disturbances of +/- 15 degrees in the roll or pitch and return the platform to +/- 3 degrees of the requested roll/pitch within 500 ms.                                                                                                                                                                |
+| SRS-07 | The stabilization firmware shall reject any disturbances of +/- 15 degrees in the roll or pitch and return the platform to +/- 3 degrees of the requested roll/pitch within 500 ms.                                                                                                                                                               |
 | SRS-08 | The firmware shall accept wireless commands for pitch, roll, and mode received from ESP32 over UART and update the desired angle settings within 100ms of receiving update.                                                                                                                                                                       |
 
 ### 6. Hardware Requirements Specification (HRS)
@@ -75,15 +75,15 @@ The hardware forms the physical construction and control of B.A.T.R.A. The senso
 
 **6.2 Functionality**
 
-| ID     | Description                                                                                                                                  |
-| ------ | -------------------------------------------------------------------------------------------------------------------------------------------- |
-| HRS-01 | The system shall use two servos each providing at least 1.8 kg-cm of torque.                                         |
-| HRS-02 | The mechanical frame shall provide two independent rotational axes (roll and pitch) with at least +/- 30 degrees of rotation on each axis.   |
-| HRS-03 | An IMU shall communicate with ATmega328PB over I2C to provide 16-bit acceleration and gyroscope data.                                        |
-| HRS-04 | The balanced platform shall support a camera of at least 30 grams without degraded performance.                                              |
-| HRS-05 | The system shall be powered by 5 AA batteries with a regulated 5V rail for logic components and shall operate for at least 30 minutes.       |
+| ID     | Description                                                                                                                                   |
+| ------ | --------------------------------------------------------------------------------------------------------------------------------------------- |
+| HRS-01 | The system shall use two servos each providing at least 1.8 kg-cm of torque.                                                                  |
+| HRS-02 | The mechanical frame shall provide two independent rotational axes (roll and pitch) with at least +/- 30 degrees of rotation on each axis.    |
+| HRS-03 | An IMU shall communicate with ATmega328PB over I2C to provide 16-bit acceleration and gyroscope data.                                         |
+| HRS-04 | The balanced platform shall support a camera of at least 30 grams without degraded performance.                                               |
+| HRS-05 | The system shall be powered by 5 AA batteries with a regulated 5V rail for logic components and shall operate for at least 30 minutes.        |
 | HRS-06 | The joystick shall provide two analog voltage output readable by the ATmega328PB ADC channels. A separate button shall control mode switches. |
-| HRS-07 | The system shall support an ESP32 with 3.3V supply communicating with ATmega328PB over UART.                                                 |
+| HRS-07 | The system shall support an ESP32 with 3.3V supply communicating with ATmega328PB over UART.                                                  |
 
 ### 7. Bill of Materials (BOM)
 
@@ -134,9 +134,9 @@ The hardware seems to be mostly working at this point in time. We are planning o
 
 We have a decent amount of work to do in relation to the mechnical design of the project. We need to finish ordering parts, designing an enclosure for our MCUs, and figuring out which camera we want to use within our already CAD-ded enclosure. This will be a big focus for two of our team members.
 
-![ejbnefi](.\image.png)
+![](.\image.png)
 
-![work](.\IMG_1208.jpeg)
+![](.\IMG_1208.jpeg)
 
 ### Next week's plan
 
