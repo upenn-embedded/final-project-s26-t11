@@ -158,7 +158,9 @@ We designed a complete CAD of our final design for the gimbal, including two han
 
 We are on our way in terms of both software and hardware! We developed some boilerplate code to read IMU data and control a servo motor. Designing the PID algorithm is still the most pressing task which we will focus on in the next week.
 
-The hardware is mostly working so far, and the remaining tasks are to interface all the parts together. 
+The hardware is mostly working so far, and the remaining tasks are to interface all the parts together.
+
+![1775931722074](image/README/1775931722074.png)
 
 ### Next week's plan
 
