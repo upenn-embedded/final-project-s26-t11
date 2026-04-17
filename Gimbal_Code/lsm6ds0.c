@@ -1,3 +1,7 @@
+#ifndef F_CPU
+#define F_CPU 16000000UL
+#endif
+
 #include <stdint.h>
 #include <util/delay.h>
 
@@ -27,6 +31,15 @@ typedef struct
     int16_t ay;
     int16_t az;
 } lsm6ds0_measurements;
+
+static void lsm6ds0_delay_ms(uint16_t delay_ms)
+{
+    while (delay_ms > 0U)
+    {
+        _delay_ms(1);
+        delay_ms--;
+    }
+}
 
 static int16_t lsm6ds0_make_s16(uint8_t low, uint8_t high)
 {
@@ -148,7 +161,7 @@ uint8_t lsm6ds0_calibrate(lsm6ds0_t *imu, uint16_t samples, uint16_t sample_peri
         ax_sum += sample.ax;
         ay_sum += sample.ay;
 
-        _delay_ms(sample_period_ms);
+        lsm6ds0_delay_ms(sample_period_ms);
     }
 
     imu->gyro_x_bias_dps = ((float)gx_sum / (float)samples) * LSM6DS0_GYRO_DPS_PER_LSB;

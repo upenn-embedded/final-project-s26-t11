@@ -10,15 +10,15 @@
 #include "lsm6ds0.h"
 
 // delay between each loop iteration 
-static const uint16_t CONTROL_LOOP_MS = 10U;
+#define CONTROL_LOOP_MS 10U
 static const float CONTROL_DT_SEC = 0.010f;
 
 // num samples to take for IMU calibration
 static const uint16_t CALIBRATION_SAMPLES = 200U;
 
 // initial target angles in degrees
-static const float TARGET_PITCH_DEG_DEFAULT = 0.0f;
-static const float TARGET_ROLL_DEG_DEFAULT = 0.0f;
+#define TARGET_PITCH_DEG_DEFAULT 0.0f
+#define TARGET_ROLL_DEG_DEFAULT 0.0f
 
 // PD control gains tuned experimentally
 static const float PITCH_KP = 6.0f;
