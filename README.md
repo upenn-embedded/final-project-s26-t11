@@ -182,7 +182,11 @@ From our system block diagram, we chose to use a 7.4V LiPo battery to supply pow
 
 We separated our logic into I2C driver, the PD algorithm, and a wrapper for the IMU to make the references to I2C easier.
 
-The I2C driver essentially works to set up an I2C connection between the IMU and the central microcontroller.
+The I2C driver essentially works to set up an I2C connection between the IMU and the central microcontroller. We use the TWI of the ATMega and enable certain bits to match the specifications of our communication. We have functions for both I2C start and stop along with more functions to write and read an ack/nack bit. 
+
+The LSM6DS0 IMU wrappers essentially modularize the functions to make them easier to access in our PD algorithm. We set up some structs in C to make it easy to reference key measurements in our code later. This part of the code also contains the main calibration - as we take gyroscope and accelerometer data and then come up with an amount the servo motor should turn in order for the gimbal to be calibrated effectively. We also write code to update the general state of the IMU in this section.
+
+Finally, we write our PD algorithm in main.c. In the gimbal_control_step line, we were able to use the Kp and Kd constants referenced earlier to determine a degree for both the pitch and the roll angles. We perform some more filtering to figure out the best way to stabilize the device relative to the level of rotation. This is going to be the main focus for the key code going forward.
 
 ### Demo your device.
 
