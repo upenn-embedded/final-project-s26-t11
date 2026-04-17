@@ -176,7 +176,7 @@ Ishan: Work on overall system integration and begin designing web interface.
 
 ### Show a system block diagram & explain the hardware implementation.
 
-From our system block diagram, we chose to use a 7.4V LiPo battery to supply power to our motors instead of 5S AA batteries. For our demo we simply powered the motors off a wall power supply for now. However, for the final implementation, we will have a buck converter step down the battery voltage to 5V for the motors and MCU. Additionally, we have implemented our IMU from the
+From our system block diagram, we chose to use a 7.4V LiPo battery to supply power to our motors instead of 5S AA batteries. For our demo we simply powered the motors off a wall power supply for now. However, for the final implementation, we will have a buck converter step down the battery voltage to 5V for the motors and MCU. Additionally, we have implemented our IMU from the block diagram but haven't implemented the joystick and button functionality. We also have yet to implement the ESP32 and IoT functionality. However, the servo motors control and PD algorithm functionality have successfully been implemented for the demo.
 
 ### Explain your firmware implementation, including application logic and critical drivers you've written.
 
@@ -196,9 +196,15 @@ We did this successfully!
 
 Show how you collected data and the outcomes.
 
+For the SRS we have successfully set up the software to reach the 3-axis acceleration and 3-axis gyroscope data. We verified using serial communication that this occurs at a rate of about 105 times per second, meeting our SRS. We have yet to use 2 ADC channels to read joystick data. However, we have implmened a PD control loop which samples at about every 11ms which we verified using serial communication. We have also verified that the software generates two PWM signals for the software through oscilloscope obervation and watching the motors move. The ranges do meet 1ms to 2ms as observed from o-scope. We have yet to implement the opperating modes or the button but have implemented the stabilization firmware and used a protactor to verify that we cn reject disturbances of 60 degrees in each direction far faster than 500ms (in truth about 200ms). We have also yet to implement the wireless communication.
+
 ### Have you achieved some or all of your Hardware Requirements Specification (HRS)?
 
 Show how you collected data and the outcomes.
+
+We have acheived all the HRS requirements besides the ones involving the joystick and the ESP32. However, we do have two servo motors that have ratings of at least 1.8kg-cm of torque so we know that requirement has met. We also used a protactor to measure the performance of the PD stabilization and were easily able to acheive 60 degrees of rotation in each direction, far exceeding our HRS. We have also verified that the ATmega communicates over I2C with the IMU as we can visibly validate that the system keeps the platform level. However, we have not yet verified that our system can run for 30 minutes and we have not verified the weight the camera can support. Additionally, we have successfully implemented the 3D design of the system as seen below.
+
+![img](IMG_1322.jpeg)
 
 ### Show off the remaining elements that will make your project whole: mechanical casework, supporting graphical user interface (GUI), web portal, etc.
 
