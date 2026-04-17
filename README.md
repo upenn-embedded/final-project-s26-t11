@@ -176,6 +176,8 @@ Ishan: Work on overall system integration and begin designing web interface.
 
 ### Show a system block diagram & explain the hardware implementation.
 
+![ww](image\README\boom.jpg)
+
 From our system block diagram, we chose to use a 7.4V LiPo battery to supply power to our motors instead of 5S AA batteries. For our demo we simply powered the motors off a wall power supply for now. However, for the final implementation, we will have a buck converter step down the battery voltage to 5V for the motors and MCU. Additionally, we have implemented our IMU from the block diagram but haven't implemented the joystick and button functionality. We also have yet to implement the ESP32 and IoT functionality. However, the servo motors control and PD algorithm functionality have successfully been implemented for the demo.
 
 ### Explain your firmware implementation, including application logic and critical drivers you've written.
