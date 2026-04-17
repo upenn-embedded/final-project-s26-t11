@@ -202,9 +202,18 @@ Show how you collected data and the outcomes.
 
 ### Show off the remaining elements that will make your project whole: mechanical casework, supporting graphical user interface (GUI), web portal, etc.
 
+We don't yet have a super cool GUI and web portal, but we do have some effective mechanical casework.
+
+![mechDesign](image\README\mechDesign.jpg)
+
+
 ### What is the riskiest part remaining of your project?
 
+One of our motors broke, and we are curious to see if we can get another motor in time. Additionally, there is a lot more work that has to be done with regards to mechanical casework (both chassis as well as power distribution) and design, which I think is going to be the key thing to figure out as we finalize the design. 
+
 ### How do you plan to de-risk this?
+
+We plan to de-risk this by splitting up the mechnical distribution and power distribution amongst ourselves well. Eugene is going to focus on the mechanical casework, whereas Ishan and Max will figure out how to make the power distribution work effectively.
 
 ## Final Report
 
