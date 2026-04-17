@@ -148,11 +148,29 @@ Eugene: Focus on mechanical design through CAD of an MCU enclosure and finalize 
 
 ## Sprint Review #2
 
+We completed sprint review 2 on Friday morning 4/10!
+
 ### Last week's progress
+
+We designed a complete CAD of our final design for the gimbal, including two handles, a camera mount, and housing for motors and other parts. We also wrote code to read data from an IMU. We initially tried to interface with a BNO085 sensor, which automatically performs sensor fusion using an accelerometer, gyroscope, and magnetometer to output clean angle data. However, this sensor is designed for use with Arduino boards, and was very hard to interface with the ATMega328PB. After a few attempts we switched to a standard IMU which gives raw accelerometer and gyroscope data, which worked well. We also finalized our parts list and ordered the remaining parts we needed. The most important part was a pair of servo motors designed for fast response rate, which is important in achieving good camera stabilization.
 
 ### Current state of project
 
+We are on our way in terms of both software and hardware! We developed some boilerplate code to read IMU data and control a servo motor. Designing the PID algorithm is still the most pressing task which we will focus on in the next week.
+
+The hardware is mostly working so far, and the remaining tasks are to interface all the parts together.
+
+![1775931722074](image/README/1775931722074.png)
+
 ### Next week's plan
+
+The main plan for next week is to 3D print the parts we designed in CAD, write the PID algorithm, and integrate all the parts together.
+
+Max: Work on PID algorithm and optimize sensor fusion + PID for smooth control.
+
+Eugene: 3D print parts and ensure everything fits as planned. Will likely need to reprint a couple times.
+
+Ishan: Work on overall system integration and begin designing web interface.
 
 ## MVP Demo
 
