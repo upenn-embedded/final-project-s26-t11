@@ -174,6 +174,23 @@ Ishan: Work on overall system integration and begin designing web interface.
 
 ## MVP Demo
 
+### Show a system block diagram & explain the hardware implementation.
+
+
+### Explain your firmware implementation, including application logic and critical drivers you've written.
+
+We separated out logic into I2C driver, the PD algorithm, and the 
+
+### Demo your device.
+### Have you achieved some or all of your Software Requirements Specification (SRS)?
+Show how you collected data and the outcomes.
+### Have you achieved some or all of your Hardware Requirements Specification (HRS)?
+Show how you collected data and the outcomes.
+### Show off the remaining elements that will make your project whole: mechanical casework, supporting graphical user interface (GUI), web portal, etc.
+### What is the riskiest part remaining of your project?
+### How do you plan to de-risk this?
+
+
 ## Final Report
 
 Don't forget to make the GitHub pages public website!
