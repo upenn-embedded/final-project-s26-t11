@@ -212,7 +212,7 @@ We have acheived all the HRS requirements besides the ones involving the joystic
 
 We don't yet have a super cool GUI and web portal, but we do have some effective mechanical casework.
 
-![mechDesign](image\README\mechDesign.jpg)
+![mechDesign](mechDesign.jpg)
 
 
 ### What is the riskiest part remaining of your project?
