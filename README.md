@@ -176,20 +176,31 @@ Ishan: Work on overall system integration and begin designing web interface.
 
 ### Show a system block diagram & explain the hardware implementation.
 
+From our system block diagram, we chose to use a 7.4V LiPo battery to supply power to our motors instead of 5S AA batteries. For our demo we simply powered the motors off a wall power supply for now. However, for the final implementation, we will have a buck converter step down the battery voltage to 5V for the motors and MCU. Additionally, we have implemented our IMU from the
 
 ### Explain your firmware implementation, including application logic and critical drivers you've written.
 
-We separated out logic into I2C driver, the PD algorithm, and the 
+We separated our logic into I2C driver, the PD algorithm, and a wrapper for the IMU to make the references to I2C easier.
+
+The I2C driver essentially works to set up an I2C connection between the IMU and the central microcontroller.
 
 ### Demo your device.
-### Have you achieved some or all of your Software Requirements Specification (SRS)?
-Show how you collected data and the outcomes.
-### Have you achieved some or all of your Hardware Requirements Specification (HRS)?
-Show how you collected data and the outcomes.
-### Show off the remaining elements that will make your project whole: mechanical casework, supporting graphical user interface (GUI), web portal, etc.
-### What is the riskiest part remaining of your project?
-### How do you plan to de-risk this?
 
+We did this successfully!
+
+### Have you achieved some or all of your Software Requirements Specification (SRS)?
+
+Show how you collected data and the outcomes.
+
+### Have you achieved some or all of your Hardware Requirements Specification (HRS)?
+
+Show how you collected data and the outcomes.
+
+### Show off the remaining elements that will make your project whole: mechanical casework, supporting graphical user interface (GUI), web portal, etc.
+
+### What is the riskiest part remaining of your project?
+
+### How do you plan to de-risk this?
 
 ## Final Report
 
@@ -218,3 +229,5 @@ If you’ve never made a GitHub pages website before, you can follow this webpag
 ### 4. Conclusion
 
 ## References
+
+f
