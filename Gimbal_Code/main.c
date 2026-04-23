@@ -21,10 +21,10 @@ static const uint16_t CALIBRATION_SAMPLES = 200U;
 #define TARGET_ROLL_DEG_DEFAULT 0.0f
 
 // PD control gains tuned experimentally
-static const float PITCH_KP = 6.0f;
-static const float ROLL_KP  = 6.0f;
-static const float PITCH_KD = 0.25f;
-static const float ROLL_KD = 0.25f;
+static const float PITCH_KP = 3.0f;
+static const float ROLL_KP  = 3.0f;
+static const float PITCH_KD = 0.0f;
+static const float ROLL_KD = 0.0f;
 
 // signs to flip motor direction
 static const float PITCH_MOTOR_SIGN = 1.0f;
