@@ -12,6 +12,13 @@ typedef struct
     float gyro_x_bias_dps;
     float gyro_y_bias_dps;
     float gyro_z_bias_dps;
+    float q0;
+    float q1;
+    float q2;
+    float q3;
+    float integral_fb_x;
+    float integral_fb_y;
+    float integral_fb_z;
     float pitch_deg;
     float roll_deg;
     uint8_t initialized;
