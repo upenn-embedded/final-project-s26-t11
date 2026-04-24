@@ -63,8 +63,6 @@
             }
             btn.disabled = false;
         });
-
-        // Poll for physical button presses updating state on ESP32
         setInterval(async () => {
             try {
                 const res = await fetch('/state');
