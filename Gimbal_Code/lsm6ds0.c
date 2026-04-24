@@ -17,20 +17,22 @@ static const uint8_t LSM6DS0_REG_OUTX_L_G = 0x22U;
 
 static const uint8_t LSM6DS0_CTRL3_BDU_IFINC = 0x44U;
 static const uint8_t LSM6DS0_CTRL1_XL_104HZ_2G = 0x40U;
-static const uint8_t LSM6DS0_CTRL2_G_104HZ_245DPS = 0x40U;
+static const uint8_t LSM6DS0_CTRL2_G_104HZ_500DPS = 0x44U;
 
-static const float LSM6DS0_GYRO_DPS_PER_LSB = 0.00875f;
+static const float LSM6DS0_GYRO_DPS_PER_LSB = 0.0175f;
 static const float LSM6DS0_ACCEL_LSB_PER_G = 16384.0f;
 static const float LSM6DS0_DEG_TO_RAD = 0.01745329252f;
 static const float LSM6DS0_RAD_TO_DEG = 57.29577951f;
-static const float LSM6DS0_MAHONY_KP = 3.5f;
-static const float LSM6DS0_MAHONY_KI = 0.05f;
-static const float LSM6DS0_INT_LIM_RADPS = 0.5f;
+static const float LSM6DS0_MAHONY_KP = 2.5f;
+static const float LSM6DS0_MAHONY_KI = 0.0f;
+static const float LSM6DS0_INT_LIM_RADPS = 0.2f;
 static const float LSM6DS0_NORM_EPSILON = 1.0e-6f;
-static const float LSM6DS0_ACCEL_TRUST_FULL_MIN_G = 0.85f;
-static const float LSM6DS0_ACCEL_TRUST_FULL_MAX_G = 1.15f;
-static const float LSM6DS0_ACCEL_TRUST_ZERO_MIN_G = 0.65f;
-static const float LSM6DS0_ACCEL_TRUST_ZERO_MAX_G = 1.35f;
+static const float LSM6DS0_ACCEL_TRUST_FULL_MIN_G = 0.90f;
+static const float LSM6DS0_ACCEL_TRUST_FULL_MAX_G = 1.10f;
+static const float LSM6DS0_ACCEL_TRUST_ZERO_MIN_G = 0.75f;
+static const float LSM6DS0_ACCEL_TRUST_ZERO_MAX_G = 1.25f;
+static const float LSM6DS0_GYRO_TRUST_FULL_MAX_DPS = 25.0f;
+static const float LSM6DS0_GYRO_TRUST_ZERO_MIN_DPS = 140.0f;
 
 typedef struct
 {
@@ -77,6 +79,22 @@ static float lsm6ds0_accel_trust(float accel_norm_lsb)
 
     return (LSM6DS0_ACCEL_TRUST_ZERO_MAX_G - accel_g) /
            (LSM6DS0_ACCEL_TRUST_ZERO_MAX_G - LSM6DS0_ACCEL_TRUST_FULL_MAX_G);
+}
+
+static float lsm6ds0_rate_trust(float gyro_norm_dps)
+{
+    if (gyro_norm_dps <= LSM6DS0_GYRO_TRUST_FULL_MAX_DPS)
+    {
+        return 1.0f;
+    }
+
+    if (gyro_norm_dps >= LSM6DS0_GYRO_TRUST_ZERO_MIN_DPS)
+    {
+        return 0.0f;
+    }
+
+    return (LSM6DS0_GYRO_TRUST_ZERO_MIN_DPS - gyro_norm_dps) /
+           (LSM6DS0_GYRO_TRUST_ZERO_MIN_DPS - LSM6DS0_GYRO_TRUST_FULL_MAX_DPS);
 }
 
 static void lsm6ds0_update_euler_from_quaternion(lsm6ds0_t *imu)
@@ -240,7 +258,7 @@ uint8_t lsm6ds0_init(lsm6ds0_t *imu)
         return 0U;
     }
 
-    if (!lsm6ds0_write_reg(imu, LSM6DS0_REG_CTRL2_G, LSM6DS0_CTRL2_G_104HZ_245DPS))
+    if (!lsm6ds0_write_reg(imu, LSM6DS0_REG_CTRL2_G, LSM6DS0_CTRL2_G_104HZ_500DPS))
     {
         return 0U;
     }
@@ -331,6 +349,8 @@ uint8_t lsm6ds0_update(lsm6ds0_t *imu, float dt_sec, lsm6ds0_attitude *attitude_
     float half_dt;
     float gx_dps;
     float gy_dps;
+    float gz_dps;
+    float gyro_norm_dps;
     lsm6ds0_measurements sample;
 
     if (dt_sec <= 0.0f)
@@ -352,9 +372,11 @@ uint8_t lsm6ds0_update(lsm6ds0_t *imu, float dt_sec, lsm6ds0_attitude *attitude_
 
     gx_dps = ((float)sample.gx * LSM6DS0_GYRO_DPS_PER_LSB) - imu->gyro_x_bias_dps;
     gy_dps = ((float)sample.gy * LSM6DS0_GYRO_DPS_PER_LSB) - imu->gyro_y_bias_dps;
+    gz_dps = ((float)sample.gz * LSM6DS0_GYRO_DPS_PER_LSB) - imu->gyro_z_bias_dps;
     gx_rps = gx_dps * LSM6DS0_DEG_TO_RAD;
     gy_rps = gy_dps * LSM6DS0_DEG_TO_RAD;
-    gz_rps = (((float)sample.gz * LSM6DS0_GYRO_DPS_PER_LSB) - imu->gyro_z_bias_dps) * LSM6DS0_DEG_TO_RAD;
+    gz_rps = gz_dps * LSM6DS0_DEG_TO_RAD;
+    gyro_norm_dps = sqrtf((gx_dps * gx_dps) + (gy_dps * gy_dps) + (gz_dps * gz_dps));
 
     ax = (float)sample.ax;
     ay = (float)sample.ay;
@@ -364,6 +386,7 @@ uint8_t lsm6ds0_update(lsm6ds0_t *imu, float dt_sec, lsm6ds0_attitude *attitude_
     if (accel_norm > LSM6DS0_NORM_EPSILON)
     {
         accel_weight = lsm6ds0_accel_trust(accel_norm);
+        accel_weight *= lsm6ds0_rate_trust(gyro_norm_dps);
 
         ax /= accel_norm;
         ay /= accel_norm;
