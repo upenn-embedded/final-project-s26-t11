@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>LED Control</title>
+    <title>Gimbal Control</title>
     <style>
         body {
             font-family: sans-serif;
@@ -16,7 +16,7 @@
             color: #eee;
         }
         h1 { margin-bottom: 2rem; }
-        #led-btn {
+        #gimbal-btn {
             padding: 1rem 2.5rem;
             font-size: 1.25rem;
             border: none;
@@ -24,32 +24,36 @@
             cursor: pointer;
             transition: background 0.2s, transform 0.1s;
         }
-        #led-btn.off  { background: #444; color: #aaa; }
-        #led-btn.on   { background: #f5c518; color: #111; }
-        #led-btn:active { transform: scale(0.96); }
+        #gimbal-btn.enabled  { background: #4caf50; color: #fff; }
+        #gimbal-btn.disabled { background: #444;    color: #aaa; }
+        #gimbal-btn:active { transform: scale(0.96); }
         #status { margin-top: 1rem; font-size: 0.9rem; color: #888; }
     </style>
 </head>
 <body>
-    <h1>LED Control</h1>
-    <button id="led-btn" class="{{ 'on' if led_on else 'off' }}">
-        LED {{ 'ON' if led_on else 'OFF' }}
+    <h1>Gimbal Control</h1>
+    <button id="gimbal-btn" class="{{ 'enabled' if gimbal_enabled else 'disabled' }}">
+        Gimbal {{ 'ENABLED' if gimbal_enabled else 'DISABLED' }}
     </button>
     <p id="status"></p>
 
     <script>
-        const btn = document.getElementById('led-btn');
+        const btn = document.getElementById('gimbal-btn');
         const status = document.getElementById('status');
+
+        function updateUI(enabled) {
+            btn.className = enabled ? 'enabled' : 'disabled';
+            btn.textContent = enabled ? 'Gimbal ENABLED' : 'Gimbal DISABLED';
+        }
 
         btn.addEventListener('click', async () => {
             btn.disabled = true;
             status.textContent = 'Sending…';
             try {
-                const res = await fetch('/toggle_led', { method: 'POST' });
+                const res = await fetch('/toggle_gimbal', { method: 'POST' });
                 const data = await res.json();
                 if (data.success) {
-                    btn.className = data.led_on ? 'on' : 'off';
-                    btn.textContent = data.led_on ? 'LED ON' : 'LED OFF';
+                    updateUI(data.gimbal_enabled);
                     status.textContent = '';
                 } else {
                     status.textContent = 'Error: ' + data.error;
@@ -59,6 +63,17 @@
             }
             btn.disabled = false;
         });
+
+        // Poll for physical button presses updating state on ESP32
+        setInterval(async () => {
+            try {
+                const res = await fetch('/state');
+                const data = await res.json();
+                if (data.success) {
+                    updateUI(data.gimbal_enabled);
+                }
+            } catch (_) {}
+        }, 500);
     </script>
 </body>
 </html>

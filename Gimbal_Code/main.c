@@ -58,9 +58,17 @@ static const uint16_t SERVO_TICKS_PER_US = 2U;
 static float g_target_pitch_deg = TARGET_PITCH_DEG_DEFAULT;
 static float g_target_roll_deg = TARGET_ROLL_DEG_DEFAULT;
 
+static volatile uint8_t isr_count = 0U;
 
-ISR(INT0_vect) {
-    gimbaling = !gimbaling;
+ISR(PCINT2_vect) {
+    isr_count++;
+    gimbaling = (PIND & (1U << PD2)) ? 1U : 0U;
+    if (gimbaling) {
+        PORTD |=  (1U << PD3);
+    } else {
+        PORTD &= ~(1U << PD3);
+    }
+    printf("ISR fired! count=%u gimbaling=%u\r\n", isr_count, gimbaling);
 }
 
 static void print_thousandths(int32_t value)
@@ -145,9 +153,11 @@ void Initialize() {
     DDRD &= ~(1U << DDD2);
     PORTD |= (1U << PD2);
 
-    EICRA |= (1U << ISC01);
-    EICRA &= ~(1U << ISC00);
-    EIMSK |= (1U << INT0);
+    DDRD  |=  (1U << DDD3);
+    PORTD &= ~(1U << PD3);
+
+    PCICR  |= (1U << PCIE2);
+    PCMSK2 |= (1U << PCINT18);
     sei();
 }
 
@@ -181,6 +191,12 @@ int main(void) {
     imu_ready = 0U;
 
     while (1) {
+        if (gimbaling) {
+            PORTD |=  (1U << PD3);
+        } else {
+            PORTD &= ~(1U << PD3);
+        }
+
         if (!imu_ready) {
             if (!lsm6ds0_detect(&imu, &whoami)) {
                 printf("IMU not found at 0x%02X or 0x%02X Check  wiring.\r\n",
