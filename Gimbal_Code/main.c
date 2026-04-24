@@ -8,6 +8,10 @@
 #include "uart.h"
 #include "i2c.h"
 #include "lsm6ds0.h"
+#include <avr/interrupt.h>
+
+//gimbaling boolean define
+static volatile uint8_t gimbaling = 1U;
 
 // delay between each loop iteration 
 #define CONTROL_LOOP_MS 10U
@@ -53,6 +57,11 @@ static const uint16_t SERVO_TICKS_PER_US = 2U;
 
 static float g_target_pitch_deg = TARGET_PITCH_DEG_DEFAULT;
 static float g_target_roll_deg = TARGET_ROLL_DEG_DEFAULT;
+
+
+ISR(INT0_vect) {
+    gimbaling = !gimbaling;
+}
 
 static void print_thousandths(int32_t value)
 {
@@ -132,6 +141,14 @@ void Initialize() {
     uart_init();
     i2c_init();
     servo_init();
+
+    DDRD &= ~(1U << DDD2);
+    PORTD |= (1U << PD2);
+
+    EICRA |= (1U << ISC01);
+    EICRA &= ~(1U << ISC00);
+    EIMSK |= (1U << INT0);
+    sei();
 }
 
 int main(void) {
@@ -212,8 +229,10 @@ int main(void) {
             _delay_ms(200);
             continue;
         }
-        gimbal_control_step(&attitude, &pitch_us, &roll_us);
-        servo_set_us(pitch_us, roll_us);
+        if(gimbaling){
+            gimbal_control_step(&attitude, &pitch_us, &roll_us);
+            servo_set_us(pitch_us, roll_us);
+        }
         debug_divider++;
         if (debug_divider >= 10U) {
             debug_divider = 0U;
