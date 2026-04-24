@@ -8,6 +8,10 @@
 #include "uart.h"
 #include "i2c.h"
 #include "lsm6ds0.h"
+#include <avr/interrupt.h>
+
+//gimbaling boolean define
+static volatile uint8_t gimbaling = 1U;
 
 // delay between each loop iteration 
 #define CONTROL_LOOP_MS 10U
@@ -95,6 +99,19 @@ typedef struct
     float roll_d_deg;
     float roll_response_deg;
 } gimbal_control_debug;
+
+static volatile uint8_t isr_count = 0U;
+
+ISR(PCINT2_vect) {
+    isr_count++;
+    gimbaling = (PIND & (1U << PD2)) ? 1U : 0U;
+    if (gimbaling) {
+        PORTD |=  (1U << PD3);
+    } else {
+        PORTD &= ~(1U << PD3);
+    }
+    printf("ISR fired! count=%u gimbaling=%u\r\n", isr_count, gimbaling);
+}
 
 static void print_thousandths(int32_t value)
 {
@@ -306,6 +323,16 @@ void Initialize() {
     i2c_init();
     servo_init();
     control_reset_integrators();
+
+    DDRD &= ~(1U << DDD2);
+    PORTD |= (1U << PD2);
+
+    DDRD  |=  (1U << DDD3);
+    PORTD &= ~(1U << PD3);
+
+    PCICR  |= (1U << PCIE2);
+    PCMSK2 |= (1U << PCINT18);
+    sei();
 }
 
 int main(void) {
@@ -352,6 +379,12 @@ int main(void) {
     imu_ready = 0U;
 
     while (1) {
+        if (gimbaling) {
+            PORTD |=  (1U << PD3);
+        } else {
+            PORTD &= ~(1U << PD3);
+        }
+
         if (!imu_ready) {
             if (!lsm6ds0_detect(&imu, &whoami)) {
                 printf("IMU not found at 0x%02X or 0x%02X Check  wiring.\r\n",
@@ -402,7 +435,8 @@ int main(void) {
             _delay_ms(200);
             continue;
         }
-
+        if(gimbaling){
+    
         if (active_control_mode != g_control_mode)
         {
             active_control_mode = g_control_mode;
@@ -420,7 +454,8 @@ int main(void) {
             gimbal_control_step(&attitude, &pitch_us, &roll_us, &control_debug);
         }
 
-        servo_set_us(pitch_us, roll_us);
+            servo_set_us(pitch_us, roll_us);
+        }
         debug_divider++;
         if (debug_divider >= DEBUG_PRINT_DIVIDER) {
             debug_divider = 0U;
