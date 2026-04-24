@@ -440,9 +440,9 @@ int main(void) {
             continue;
         }
         {
-            int8_t joy_step = joystick_read_vertical_step();
-            if (joy_step != 0) {
-                g_target_pitch_deg += (float)joy_step * JOYSTICK_STEP_DEG;
+            int8_t joy_v = joystick_read_vertical_step();
+            if (joy_v != 0) {
+                g_target_pitch_deg += (float)joy_v * JOYSTICK_STEP_DEG;
             }
         }
 
@@ -471,9 +471,12 @@ int main(void) {
         if (debug_divider >= DEBUG_PRINT_DIVIDER) {
             debug_divider = 0U;
             print_control_debug(&attitude, &control_debug, pitch_us, roll_us);
-            printf("joy_raw=%u joy_step=%d target_pitch=", joystick_read_raw(), (int)joystick_read_vertical_step());
+            printf("joy_v=%u step=%d target=(",
+                   joystick_read_raw(), (int)joystick_read_vertical_step());
             print_thousandths((int32_t)(g_target_pitch_deg * 1000.0f));
-            printf("\r\n");
+            printf(",");
+            print_thousandths((int32_t)(g_target_roll_deg * 1000.0f));
+            printf(")\r\n");
         }
         _delay_ms(CONTROL_LOOP_MS);
     }
