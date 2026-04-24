@@ -21,11 +21,6 @@ static volatile uint8_t gimbaling = 1U;
 static const float CONTROL_DT_SEC = 0.010f;
 static const uint8_t DEBUG_PRINT_DIVIDER = 25U;
 
-// control mode selector (change this to switch behavior)
-static const uint8_t CONTROL_MODE_NORMAL_PID = 0U;
-static const uint8_t CONTROL_MODE_NEGATIVE_IMU_TEST = 1U;
-static volatile uint8_t g_control_mode = 0U;
-
 // num samples to take for IMU calibration
 static const uint16_t CALIBRATION_SAMPLES = 200U;
 
@@ -264,36 +259,6 @@ static void gimbal_control_step(const lsm6ds0_attitude *attitude,
     *roll_us = clamp_u16(roll_us_cmd, ROLL_SERVO_MIN_US, ROLL_SERVO_MAX_US);
 }
 
-static void gimbal_negative_imu_test_step(const lsm6ds0_attitude *attitude,
-                                          uint16_t *pitch_us,
-                                          uint16_t *roll_us,
-                                          gimbal_control_debug *debug)
-{
-    float pitch_cmd_deg = -attitude->pitch_deg;
-    float roll_cmd_deg = -attitude->roll_deg;
-    int32_t pitch_us_cmd;
-    int32_t roll_us_cmd;
-
-    // In test mode, report only the final response term. P/I/D terms are not used.
-    debug->pitch_p_deg = 0.0f;
-    debug->pitch_i_deg = 0.0f;
-    debug->pitch_d_deg = 0.0f;
-    debug->pitch_response_deg = pitch_cmd_deg;
-
-    debug->roll_p_deg = 0.0f;
-    debug->roll_i_deg = 0.0f;
-    debug->roll_d_deg = 0.0f;
-    debug->roll_response_deg = roll_cmd_deg;
-
-    pitch_us_cmd = (int32_t)PITCH_SERVO_NEUTRAL_US + PITCH_SERVO_TRIM_US +
-                   (int32_t)(PITCH_MOTOR_SIGN * pitch_cmd_deg * SERVO_US_PER_DEG);
-    roll_us_cmd = (int32_t)ROLL_SERVO_NEUTRAL_US + ROLL_SERVO_TRIM_US +
-                  (int32_t)(ROLL_MOTOR_SIGN * roll_cmd_deg * SERVO_US_PER_DEG);
-
-    *pitch_us = clamp_u16(pitch_us_cmd, PITCH_SERVO_MIN_US, PITCH_SERVO_MAX_US);
-    *roll_us = clamp_u16(roll_us_cmd, ROLL_SERVO_MIN_US, ROLL_SERVO_MAX_US);
-}
-
 static void print_control_debug(const lsm6ds0_attitude *attitude,
                                 const gimbal_control_debug *debug,
                                 uint16_t pitch_us,
@@ -341,7 +306,6 @@ void Initialize() {
 
 int main(void) {
     uint8_t whoami;
-    uint8_t active_control_mode;
     uint8_t imu_ready;
     uint8_t debug_divider;
     lsm6ds0_t imu;
@@ -361,7 +325,6 @@ int main(void) {
     attitude.gy_dps = 0.0f;
     pitch_us = PITCH_SERVO_NEUTRAL_US;
     roll_us = ROLL_SERVO_NEUTRAL_US;
-    active_control_mode = 0xFFU;
     debug_divider = 0U;
 
     control_debug.pitch_p_deg = 0.0f;
@@ -378,8 +341,6 @@ int main(void) {
     printf("Servo outputs: OC1A=PB1 (pitch), OC1B=PB2 (roll)\r\n");
     printf("Servo frame: %u us (50Hz)\r\n", SERVO_FRAME_US);
     printf("Servo range us: pitch[%u,%u] roll[%u,%u]\r\n", PITCH_SERVO_MIN_US, PITCH_SERVO_MAX_US, ROLL_SERVO_MIN_US, ROLL_SERVO_MAX_US);
-        printf("Control mode: %s\r\n",
-            (g_control_mode == CONTROL_MODE_NEGATIVE_IMU_TEST) ? "NEGATIVE_IMU_TEST" : "NORMAL_PID");
     imu_ready = 0U;
 
     while (1) {
@@ -447,23 +408,7 @@ int main(void) {
         }
 
         if(gimbaling){
-
-        if (active_control_mode != g_control_mode)
-        {
-            active_control_mode = g_control_mode;
-            control_reset_integrators();
-            printf("Control mode changed: %s\r\n",
-                   (active_control_mode == CONTROL_MODE_NEGATIVE_IMU_TEST) ? "NEGATIVE_IMU_TEST" : "NORMAL_PID");
-        }
-
-        if (active_control_mode == CONTROL_MODE_NEGATIVE_IMU_TEST)
-        {
-            gimbal_negative_imu_test_step(&attitude, &pitch_us, &roll_us, &control_debug);
-        }
-        else
-        {
             gimbal_control_step(&attitude, &pitch_us, &roll_us, &control_debug);
-        }
 
             servo_set_us(pitch_us, roll_us);
         }
