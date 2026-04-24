@@ -8,7 +8,10 @@
 #include "uart.h"
 #include "i2c.h"
 #include "lsm6ds0.h"
+#include "joystick.h"
 #include <avr/interrupt.h>
+
+#define JOYSTICK_STEP_DEG 0.5f
 
 //gimbaling boolean define
 static volatile uint8_t gimbaling = 1U;
@@ -322,6 +325,7 @@ void Initialize() {
     uart_init();
     i2c_init();
     servo_init();
+    joystick_init();
     control_reset_integrators();
 
     DDRD &= ~(1U << DDD2);
@@ -435,8 +439,15 @@ int main(void) {
             _delay_ms(200);
             continue;
         }
+        {
+            int8_t joy_step = joystick_read_vertical_step();
+            if (joy_step != 0) {
+                g_target_pitch_deg += (float)joy_step * JOYSTICK_STEP_DEG;
+            }
+        }
+
         if(gimbaling){
-    
+
         if (active_control_mode != g_control_mode)
         {
             active_control_mode = g_control_mode;
@@ -460,6 +471,9 @@ int main(void) {
         if (debug_divider >= DEBUG_PRINT_DIVIDER) {
             debug_divider = 0U;
             print_control_debug(&attitude, &control_debug, pitch_us, roll_us);
+            printf("joy_raw=%u joy_step=%d target_pitch=", joystick_read_raw(), (int)joystick_read_vertical_step());
+            print_thousandths((int32_t)(g_target_pitch_deg * 1000.0f));
+            printf("\r\n");
         }
         _delay_ms(CONTROL_LOOP_MS);
     }
