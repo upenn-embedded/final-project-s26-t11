@@ -278,14 +278,13 @@ In this section, we choose to validate these two commands:
 
 | ID     | Description                                                                                                                                                                                                                                                           |
 | ------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| SRS-01 | The firmware shall read 3-axis acceleration data and 3-axis gyroscope data from the IMU over I2C at a rate of 100 Hz +/- 10 Hz.                                                                                                                                                                                                                   |
 | SRS-02 | The firmware shall sample the 2 ADC channels recording data from the 2 axes of the joystick at a rate of at least 50 Hz and have a dead region at +/- 5% of the sensor range around the joystick sensor to prevent "stick drift".                                                                                                                 |
 
-We start by validating SRS_01. Here is what we were able to print to our serial terminal as a means of debugging information from the IMU.
+| SRS-04 | The firmware shall generate the PWM signals for the two servo motors with PWM ranges from 1 ms to 2 ms, corresponding to the angular range of the servo motors.                                                      |
 
 Our validation of SRS-02 can be done through understanding the code, especially in this section:
 
-'''
+```
 #include <avr/io.h>
 #include <stdint.h>
 
@@ -296,10 +295,23 @@ Our validation of SRS-02 can be done through understanding the code, especially 
 '''
 The dead zone is ADC counts 180–480 out of 0–1023, which is +/- 14.7% of the sensor range (way over the 5% minimum margin for the deadzone). 
 
-The 50 Hz sampling of the AD channels is done because of the code in the main.c file. The joystick_read_raw and joystick read_horizontal_step
+The 50 Hz sampling of the AD channels is done because of the code in the main.c file. The joystick_read_raw and joystick read_horizontal_step are done in main.c, which is controlled by this code:
+```
 
-Applied in joystick_read_vertical_step() at joystick.c:38-44 and joystick_read_horizontal_step() at joystick.c:46-52
-≥50 Hz sampling on both ADC channels — both joystick_read_raw() (ADC0) and joystick_read_horizontal_raw() (ADC1) are called inside the 100 Hz control loop (CONTROL_LOOP_MS = 10U at main.c:20)
+```
+// delay between each loop iteration 
+#define CONTROL_LOOP_MS 10U
+static const float CONTROL_DT_SEC = 0.010f;
+static const uint8_t DEBUG_PRINT_DIVIDER = 25U;
+```
+
+This validates our understanding of SRS-02. 
+
+Our validation of SRS-04 can be done here now. We once again do this mainly though code. 
+
+
+
+
 
 ### 3.2 Hardware Requirements Specification (HRS) Validation and Results
 
@@ -327,5 +339,4 @@ Similar to last section, we will explain the overall results and then
 
 ### 4. Conclusion
 
-## References
-
+Ultimately we learned a lot as a group. We learned a lot about mechanical prototyping using CAD, writing drivers for external sensors, and even some basic web development through the implementation of a Flask web server. We think that the overall hardware-software integration of the project was good - as a whole, the project is a surprisingly usable product that can be used well from both a hardware and software perspective. We are proud of implementing out first complex CAD design, as well as implementing a lot of code for the IMU driver as well as the PID algorithm. We learned a lot about budgeting our time and planning out our work for engineering projects. With so many moving pieces, we learned a lot about being able to compartmentalize tasks in order to reach our overall end goal. We had to change our approach with the mechnical prototyping multiple times. We constantly messed up and printed pieces that didn't exactly fit what we were looking for or fit with out existing components. In the future, we will look to order parts earlier. We ordered motors too close to the deadline, and were thus incredibly disappointed to see that the motors wouldn't work with the device and the weight HRS requirements. One of the biggest obstacles we didn't anticipate was the difficulty in getting the Flask server to coordinate with the ESP-32 and subsequent Arduino code. It was challenging to make both the hardware and software communicate with each other bidrectionally, and we are proud of the way we ended up getting the Flask/ESP32 coordination to work out. The next step for this project is to tune the PID algorithm better and then create a more concrete mechanical enclosure for all the parts. As of right now, the boards and wires hang out, which is not ideal for a truly working product. 
