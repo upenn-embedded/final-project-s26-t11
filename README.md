@@ -14,7 +14,9 @@
 
 **GitHub Repository URL: [https://github.com/upenn-embedded/final-project-s26-t11](https://github.com/upenn-embedded/final-project-s26-t11)**
 
-**GitHub Pages Website URL:** [for final submission]*
+**GitHub Pages Website URL:** [https://upenn-embedded.github.io/final-project-s26-t11/](https://upenn-embedded.github.io/final-project-s26-t11/)**
+
+Hey Graders! The Final Project Reflection and Submission is at the bottom of this document. 
 
 ## Final Project Proposal
 
@@ -52,7 +54,7 @@ The software for B.A.T.R.A. is responsible for reading sensor data, running the 
 
 **5.2 Functionality**
 
-| ID     | Description                                                                                                                                                                                                                                                                                                                                       |
+| ID     | Description                                                                                                                                                                                                                                                           |
 | ------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | SRS-01 | The firmware shall read 3-axis acceleration data and 3-axis gyroscope data from the IMU over I2C at a rate of 100 Hz +/- 10 Hz.                                                                                                                                                                                                                   |
 | SRS-02 | The firmware shall sample the 2 ADC channels recording data from the 2 axes of the joystick at a rate of at least 50 Hz and have a dead region at +/- 5% of the sensor range around the joystick sensor to prevent "stick drift".                                                                                                                 |
@@ -230,17 +232,42 @@ If you’ve never made a GitHub pages website before, you can follow this webpag
 
 ### 1. Video
 
+The video can be found at this Google Drive link: 
+
 ### 2. Images
 
-### 3. Results
 
-#### 3.1 Software Requirements Specification (SRS) Results
 
-| ID     | Description                                                                                               | Validation Outcome                                                                          |
-| ------ | --------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------- |
-| SRS-01 | The IMU 3-axis acceleration will be measured with 16-bit depth every 100 milliseconds +/-10 milliseconds. | Confirmed, logged output from the MCU is saved to "validation" folder in GitHub repository. |
+### 3. 400x400 Image
 
-#### 3.2 Hardware Requirements Specification (HRS) Results
+### 4 Software Requirements Specification (SRS) Validation and Results
+
+| ID     | Description                                                                                                                                                                                                                                                           |
+| ------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| SRS-01 | The firmware shall read 3-axis acceleration data and 3-axis gyroscope data from the IMU over I2C at a rate of 100 Hz +/- 10 Hz.                                                                                                                                                                                                                   |
+| SRS-02 | The firmware shall sample the 2 ADC channels recording data from the 2 axes of the joystick at a rate of at least 50 Hz and have a dead region at +/- 5% of the sensor range around the joystick sensor to prevent "stick drift".                                                                                                                 |
+| SRS-03 | The firmware shall complete a PID control loop for each axis at least every 10 ms +/- 2 ms. This loop involves computing the corrective commands send to the servo motors from the error between measured and desired angle.                                                                                                                      |
+| SRS-04 | The firmware shall generate the PWM signals for the two servo motors with PWM ranges from 1 ms to 2 ms, corresponding to the angular range of the servo motors.                                                      |
+| SRS-05 | The firmware shall support two operating modes. One mode is a stabilized hold where the current pitch and roll angles are maintained, and the other mode is where a joystick is used sets the desired stabilization angle<br />(and thus the camera position can be controlled from the joystick). The modes can be selected using a mode button. |
+| SRS-06 | When the mode select button is held for at least 1 second, the firmware shall level out the platform within 2 seconds.                                                                                                                                                                                                        |
+| SRS-07 | The stabilization firmware shall reject any disturbances of +/- 15 degrees in the roll or pitch and return the platform to +/- 3 degrees of the requested roll/pitch within 500 ms.                                                                                                                                                               |
+| SRS-08 | The firmware shall accept wireless commands for pitch, roll, and mode received from ESP32 over UART and update the desired angle settings within 100ms of receiving update.        
+
+### 3.2 Hardware Requirements Specification (HRS) Validation and Results
+
+For a refresher, here are what our initial HRS ideas were:| ID     | Description                                                                                                                                   |
+| ------ | --------------------------------------------------------------------------------------------------------------------------------------------- |
+| HRS-01 | The system shall use two servos each providing at least 1.8 kg-cm of torque.                                                                  |
+| HRS-02 | The mechanical frame shall provide two independent rotational axes (roll and pitch) with at least +/- 30 degrees of rotation on each axis.    |
+| HRS-03 | An IMU shall communicate with ATmega328PB over I2C to provide 16-bit acceleration and gyroscope data.                                         |
+| HRS-04 | The balanced platform shall support a camera of at least 30 grams without degraded performance.                                               |
+| HRS-05 | The system shall be powered by 5 AA batteries with a regulated 5V rail for logic components and shall operate for at least 30 minutes.        |
+| HRS-06 | The joystick shall provide two analog voltage output readable by the ATmega328PB ADC channels. A separate button shall control mode switches. |
+| HRS-07 | The system shall support an ESP32 with 3.3V supply communicating with ATmega328PB over UART.                                                  |
+
+Similar to last section, we will explain the net results and then detail 
+
+
 
 | ID     | Description                                                                                                                        | Validation Outcome                                                                                                      |
 | ------ | ---------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------- |
@@ -251,4 +278,3 @@ If you’ve never made a GitHub pages website before, you can follow this webpag
 
 ## References
 
-f
