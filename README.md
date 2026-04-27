@@ -280,7 +280,7 @@ In this section, we choose to validate these two commands:
 | ------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | SRS-02 | The firmware shall sample the 2 ADC channels recording data from the 2 axes of the joystick at a rate of at least 50 Hz and have a dead region at +/- 5% of the sensor range around the joystick sensor to prevent "stick drift".                                                                                                                 |
 
-| SRS-04 | The firmware shall generate the PWM signals for the two servo motors with PWM ranges from 1 ms to 2 ms, corresponding to the angular range of the servo motors.                                                      |
+| SRS-03 | The firmware shall complete a PID control loop for each axis at least every 10 ms +/- 2 ms. This loop involves computing the corrective commands send to the servo motors from the error between measured and desired angle.                                                                                                                      |
 
 Our validation of SRS-02 can be done through understanding the code, especially in this section:
 
@@ -307,11 +307,16 @@ static const uint8_t DEBUG_PRINT_DIVIDER = 25U;
 
 This validates our understanding of SRS-02. 
 
-Our validation of SRS-04 can be done here now. We once again do this mainly though code. 
+Our validation of SRS-03 can be done here now. We once again do this mainly though code. 
 
+Firstly, we can see that the time it takes for the control loop to iterate is just 10 ms:
 
+```
+#define CONTROL_LOOP_MS 10U
+static const float CONTROL_DT_SEC = 0.010f;
+```
 
-
+The only work done between iterations is the IMU update command, which takes roughly 1.2 ms (we approximate because it's a 12-byte I2C packet sent at 100 Khz). We see that since 11.2ms is within the range of 8-12 ms, which means that SRS-03 is also verified through observation of the code and system analysis.
 
 ### 3.2 Hardware Requirements Specification (HRS) Validation and Results
 
