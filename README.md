@@ -16,7 +16,7 @@
 
 **GitHub Pages Website URL:** [https://upenn-embedded.github.io/final-project-s26-t11/](https://upenn-embedded.github.io/final-project-s26-t11/)**
 
-Hey Graders! The Final Project Reflection and Submission is at the bottom of this document. 
+Hey Graders! The Final Project Reflection and Submission is at the bottom of this document.
 
 ## Final Project Proposal
 
@@ -54,7 +54,7 @@ The software for B.A.T.R.A. is responsible for reading sensor data, running the 
 
 **5.2 Functionality**
 
-| ID     | Description                                                                                                                                                                                                                                                           |
+| ID     | Description                                                                                                                                                                                                                                                                                                                                       |
 | ------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | SRS-01 | The firmware shall read 3-axis acceleration data and 3-axis gyroscope data from the IMU over I2C at a rate of 100 Hz +/- 10 Hz.                                                                                                                                                                                                                   |
 | SRS-02 | The firmware shall sample the 2 ADC channels recording data from the 2 axes of the joystick at a rate of at least 50 Hz and have a dead region at +/- 5% of the sensor range around the joystick sensor to prevent "stick drift".                                                                                                                 |
@@ -186,7 +186,7 @@ From our system block diagram, we chose to use a 7.4V LiPo battery to supply pow
 
 We separated our logic into I2C driver, the PD algorithm, and a wrapper for the IMU to make the references to I2C easier.
 
-The I2C driver essentially works to set up an I2C connection between the IMU and the central microcontroller. We use the TWI of the ATMega and enable certain bits to match the specifications of our communication. We have functions for both I2C start and stop along with more functions to write and read an ack/nack bit. 
+The I2C driver essentially works to set up an I2C connection between the IMU and the central microcontroller. We use the TWI of the ATMega and enable certain bits to match the specifications of our communication. We have functions for both I2C start and stop along with more functions to write and read an ack/nack bit.
 
 The LSM6DS0 IMU wrappers essentially modularize the functions to make them easier to access in our PD algorithm. We set up some structs in C to make it easy to reference key measurements in our code later. This part of the code also contains the main calibration - as we take gyroscope and accelerometer data and then come up with an amount the servo motor should turn in order for the gimbal to be calibrated effectively. We also write code to update the general state of the IMU in this section.
 
@@ -216,10 +216,9 @@ We don't yet have a super cool GUI and web portal, but we do have some effective
 
 ![mechDesign](mechDesign.jpg)
 
-
 ### What is the riskiest part remaining of your project?
 
-One of our motors broke, and we are curious to see if we can get another motor in time. Additionally, there is a lot more work that has to be done with regards to mechanical casework (both chassis as well as power distribution) and design, which I think is going to be the key thing to figure out as we finalize the design. 
+One of our motors broke, and we are curious to see if we can get another motor in time. Additionally, there is a lot more work that has to be done with regards to mechanical casework (both chassis as well as power distribution) and design, which I think is going to be the key thing to figure out as we finalize the design.
 
 ### How do you plan to de-risk this?
 
@@ -232,33 +231,30 @@ If you’ve never made a GitHub pages website before, you can follow this webpag
 
 ### 1. Video
 
-The video can be found at this Google Drive link: 
+The video can be found at this Google Drive link:
 
 ### 2. Images
-
-
 
 ### 3. 400x400 Image
 
 ### 4 Software Requirements Specification (SRS) Validation and Results
 
-| ID     | Description                                                                                                                                                                                                                                                           |
+| ID     | Description                                                                                                                                                                                                                                                                                                                                       |
 | ------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | SRS-01 | The firmware shall read 3-axis acceleration data and 3-axis gyroscope data from the IMU over I2C at a rate of 100 Hz +/- 10 Hz.                                                                                                                                                                                                                   |
 | SRS-02 | The firmware shall sample the 2 ADC channels recording data from the 2 axes of the joystick at a rate of at least 50 Hz and have a dead region at +/- 5% of the sensor range around the joystick sensor to prevent "stick drift".                                                                                                                 |
 | SRS-03 | The firmware shall complete a PID control loop for each axis at least every 10 ms +/- 2 ms. This loop involves computing the corrective commands send to the servo motors from the error between measured and desired angle.                                                                                                                      |
-| SRS-04 | The firmware shall generate the PWM signals for the two servo motors with PWM ranges from 1 ms to 2 ms, corresponding to the angular range of the servo motors.                                                      |
+| SRS-04 | The firmware shall generate the PWM signals for the two servo motors with PWM ranges from 1 ms to 2 ms, corresponding to the angular range of the servo motors.                                                                                                                                                                                   |
 | SRS-05 | The firmware shall support two operating modes. One mode is a stabilized hold where the current pitch and roll angles are maintained, and the other mode is where a joystick is used sets the desired stabilization angle<br />(and thus the camera position can be controlled from the joystick). The modes can be selected using a mode button. |
-| SRS-06 | When the mode select button is held for at least 1 second, the firmware shall level out the platform within 2 seconds.                                                                                                                                                                                                        |
+| SRS-06 | When the mode select button is held for at least 1 second, the firmware shall level out the platform within 2 seconds.                                                                                                                                                                                                                            |
 | SRS-07 | The stabilization firmware shall reject any disturbances of +/- 15 degrees in the roll or pitch and return the platform to +/- 3 degrees of the requested roll/pitch within 500 ms.                                                                                                                                                               |
-| SRS-08 | The firmware shall accept wireless commands for pitch, roll, and mode received from ESP32 over UART and update the desired angle settings within 100ms of receiving update.        
+| SRS-08 | The firmware shall accept wireless commands for pitch, roll, and mode received from ESP32 over UART and update the desired angle settings within 100ms of receiving update.                                                                                                                                                                       |
 
-SRS-01 was easy to validate, and we were able to do this through printing out values from the gyroscope to the terminal (which we did so with a lot of their functions). SRS-02 was verified primarily through the code - we manually set values for the stick drift which were substantially over the +/- 5% margin that we set earlier. SRS-03 was also done through the code. We are able to see this directly in the main.c file, which has a continuous PID control loop and step which is being edited. For SRS-04, we are able to also see this implementation of PWM signals to the motors being done in 
+SRS-01 was easy to validate, and we were able to do this through printing out values from the gyroscope to the terminal (which we did so with a lot of their functions). SRS-02 was verified primarily through the code - we manually set values for the stick drift which were substantially over the +/- 5% margin that we set earlier. SRS-03 was also done through the code. We are able to see this directly in the main.c file, which has a continuous PID control loop and step which is being edited. For SRS-04, we are able to also see this implementation of PWM signals to the motors being done in
 
 ### 3.2 Hardware Requirements Specification (HRS) Validation and Results
 
 For a refresher, here are what our initial HRS ideas were:
-
 
 | ID     | Description                                                                                                                                   |
 | ------ | --------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -268,18 +264,15 @@ For a refresher, here are what our initial HRS ideas were:
 | HRS-04 | The balanced platform shall support a camera of at least 30 grams without degraded performance.                                               |
 | HRS-05 | The system shall be powered by 5 AA batteries with a regulated 5V rail for logic components and shall operate for at least 30 minutes.        |
 | HRS-06 | The joystick shall provide two analog voltage output readable by the ATmega328PB ADC channels. A separate button shall control mode switches. |
-| HRS-07 | The system shall support an ESP32 with 3.3V supply communicating with ATmega328PB over UART.      
+| HRS-07 | The system shall support an ESP32 with 3.3V supply communicating with ATmega328PB over UART.                                                  |
 
-Similar to last section, we will explain the overall results and then 
+We have achieved all the original HRS requirements besides the power related-HRS which have now been modified. We also weren't able to directly verfiy that the servo motors exert a certain amount of torque through a physical measurement tool. However, we measured the supplied voltage to the servo motors and based off their data sheet determined the supplied torque expected. We also used a protactor to measure the performance of the PD stabilization and were easily able to acheive 60 degrees of rotation in each direction, far exceeding our HRS. We have also verified that the ATmega communicates over I2C with the IMU as we can visibly validate that the system keeps the platform level. To verify our weight requirement we simply used a camera that exceeded 30 grams and ensured functionality. We also ran the gimble while walking around with it for excess of 30 minutes to ensure that under light use the most of the functionality can remain on. Additionally, we have successfully implemented the 3D design of the system as seen below.
 
-
-
-| ID     | Description                                                                                                                        | Validation Outcome                                                                                                      |
-| ------ | ---------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------- |
-| HRS-01 | A distance sensor shall be used for obstacle detection. The sensor shall detect obstacles at a maximum distance of at least 10 cm. | Confirmed, sensed obstacles up to 15cm. Video in "validation" folder, shows tape measure and logged output to terminal. |
-|        |                                                                                                                                    |                                                                                                                         |
+| ID     | Description                                                                                                                                | Validation Outcome                                                                                                                                                                                           |
+| ------ | ------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| HRS-02 | The mechanical frame shall provide two independent rotational axes (roll and pitch) with at least +/- 30 degrees of rotation on each axis. | Confirmed, mechanical frame supports functional stabilization to +/- 90 degrees for each axis. Images below show validation using a straight edge to estimate 90 degrees of rotation on mechanical assembly. |
+| HRS-04 | The balanced platform shall support a camera of at least 30 grams without degraded performance.                                            | Confirmed, gimbal system supports go pro weighing 141 grams without degraded performance. Demo video demonstrates full functionality with go pro and image below shows recording of go pro weight.           |
 
 ### 4. Conclusion
 
 ## References
-
