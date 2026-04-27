@@ -253,9 +253,14 @@ The video can be found at this Google Drive link:
 | SRS-07 | The stabilization firmware shall reject any disturbances of +/- 15 degrees in the roll or pitch and return the platform to +/- 3 degrees of the requested roll/pitch within 500 ms.                                                                                                                                                               |
 | SRS-08 | The firmware shall accept wireless commands for pitch, roll, and mode received from ESP32 over UART and update the desired angle settings within 100ms of receiving update.        
 
+SRS-01 was easy to validate, and we were able to do this through printing out values from the gyroscope to the terminal (which we did so with a lot of their functions). SRS-02 was verified primarily through the code - we manually set values for the stick drift which were substantially over the +/- 5% margin that we set earlier. SRS-03 was also done through the code. We are able to see this directly in the main.c file, which has a continuous PID control loop and step which is being edited. For SRS-04, we are able to also see this implementation of PWM signals to the motors being done in 
+
 ### 3.2 Hardware Requirements Specification (HRS) Validation and Results
 
-For a refresher, here are what our initial HRS ideas were:| ID     | Description                                                                                                                                   |
+For a refresher, here are what our initial HRS ideas were:
+
+
+| ID     | Description                                                                                                                                   |
 | ------ | --------------------------------------------------------------------------------------------------------------------------------------------- |
 | HRS-01 | The system shall use two servos each providing at least 1.8 kg-cm of torque.                                                                  |
 | HRS-02 | The mechanical frame shall provide two independent rotational axes (roll and pitch) with at least +/- 30 degrees of rotation on each axis.    |
@@ -263,9 +268,9 @@ For a refresher, here are what our initial HRS ideas were:| ID     | Description
 | HRS-04 | The balanced platform shall support a camera of at least 30 grams without degraded performance.                                               |
 | HRS-05 | The system shall be powered by 5 AA batteries with a regulated 5V rail for logic components and shall operate for at least 30 minutes.        |
 | HRS-06 | The joystick shall provide two analog voltage output readable by the ATmega328PB ADC channels. A separate button shall control mode switches. |
-| HRS-07 | The system shall support an ESP32 with 3.3V supply communicating with ATmega328PB over UART.                                                  |
+| HRS-07 | The system shall support an ESP32 with 3.3V supply communicating with ATmega328PB over UART.      
 
-Similar to last section, we will explain the net results and then detail 
+Similar to last section, we will explain the overall results and then 
 
 
 
