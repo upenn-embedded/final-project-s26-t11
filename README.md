@@ -326,9 +326,21 @@ For a refresher, here are what our initial HRS ideas were:
 | HRS-04 | The balanced platform shall support a camera of at least 30 grams without degraded performance.                                               |
 | HRS-05 | The system shall be powered by 5 AA batteries with a regulated 5V rail for logic components and shall operate for at least 30 minutes.        |
 | HRS-06 | The joystick shall provide two analog voltage output readable by the ATmega328PB ADC channels. A separate button shall control mode switches. |
-| HRS-07 | The system shall support an ESP32 with 3.3V supply communicating with ATmega328PB over UART.                                                  |
+| HRS-07 | The system shall support an ESP32 with 5V supply communicating with ATmega328PB over UART.                                                    |
 
-We have achieved all the original HRS requirements besides the power related-HRS which have now been modified. We also weren't able to directly verfiy that the servo motors exert a certain amount of torque through a physical measurement tool. However, we measured the supplied voltage to the servo motors and based off their data sheet determined the supplied torque expected. We also used a protactor to measure the performance of the PD stabilization and were easily able to acheive 60 degrees of rotation in each direction, far exceeding our HRS. We have also verified that the ATmega communicates over I2C with the IMU as we can visibly validate that the system keeps the platform level. To verify our weight requirement we simply used a camera that exceeded 30 grams and ensured functionality. We also ran the gimble while walking around with it for excess of 30 minutes to ensure that under light use the most of the functionality can remain on. Additionally, we have successfully implemented the 3D design of the system as seen below.
+HRS-01: We also weren't able to directly verfiy that the servo motors exert a certain amount of torque through a physical measurement tool. However, we measured the supplied voltage to the servo motors and based off their data sheet determined the supplied torque expected at a supply voltage of 6V far exceeds our minimum requirement. 
+
+HRS-02: We also used a protactor to measure the performance of the PD stabilization and were easily able to acheive 90 degrees of rotation in each direction, far exceeding our HRS. 
+
+HRS-03: We have also verified that the ATmega communicates over I2C with the IMU as we can visibly validate that the system keeps the platform level. We tested with a logic analyzer to verify that the packets were 16 bits in a similar process to WS3.
+
+HRS-04: To verify our weight requirement we simply used a camera that exceeded 30 grams and ensured functionality. Our GoPro that demonstrated functionality was over 100 grams.
+
+HRS-05: This hardware requirement was slightly modified as we chose to use a 7.4 V nominal Li-Po battery to power our motors so that enough current could be supplied for a fast response. We also added a 5V usb-c battery pack to power the Atmega. We did aim to run the whole system off of one battery supply but time constraints got in the way of a more elegant power delivery system as we later had to add a DC-DC converter to step down to 6V to meet the requirements of our replacement motors. We later walked around and filmed about 40 minutes of video with gimbal active, reaching the 30 minute requirement.
+
+HRS-06: In our demo video, we highlighted complete functionality for both pitch and roll with our joystick. The joystick works with a deadband to prevent stickdrift and fully functions to adjust pitch and roll. This is implemented through two ADC channels.
+
+HRS-07: We demonstrated IoT functinoality in our demo video with the ESP32 actively being powered off of our 5V battery pack.
 
 | ID     | Description                                                                                                                                | Validation Outcome                                                                                                                                                                                           |
 | ------ | ------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
