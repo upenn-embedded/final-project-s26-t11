@@ -241,7 +241,7 @@ The video can be found at this Google Drive link:
 
 #### 4.1 SRS Results
 
-| ID     | Description                                                                                                                                                                                                                                                           |
+| ID     | Description                                                                                                                                                                                                                                                                                                                                       |
 | ------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | SRS-01 | The firmware shall read 3-axis acceleration data and 3-axis gyroscope data from the IMU over I2C at a rate of 100 Hz +/- 10 Hz.                                                                                                                                                                                                                   |
 | SRS-02 | The firmware shall sample the 2 ADC channels recording data from the 2 axes of the joystick at a rate of at least 50 Hz and have a dead region at +/- 5% of the sensor range around the joystick sensor to prevent "stick drift".                                                                                                                 |
@@ -252,30 +252,29 @@ The video can be found at this Google Drive link:
 | SRS-07 | The stabilization firmware shall reject any disturbances of +/- 15 degrees in the roll or pitch and return the platform to +/- 3 degrees of the requested roll/pitch within 500 ms.                                                                                                                                                               |
 | SRS-08 | The firmware shall accept wireless commands for pitch, roll, and mode received from ESP32 over UART and update the desired angle settings within 100ms of receiving update.                                                                                                                                                                       |
 
-SRS-01 was easy to validate, and we were able to do this through printing out values from the gyroscope to the terminal (which we did so with a lot of their functions). 
+SRS-01 was easy to validate, and we were able to do this through printing out values from the gyroscope to the terminal (which we did so with a lot of their functions).
 
-SRS-02 was verified primarily through the code - we manually set values for the stick drift which were substantially over the +/- 5% margin that we set earlier (see the values for JOY_DEADBAND) in joystick.c. 
+SRS-02 was verified primarily through the code - we manually set values for the stick drift which were substantially over the +/- 5% margin that we set earlier (see the values for JOY_DEADBAND) in joystick.c.
 
-SRS-03 was also done through the code. We are able to see this directly in the main.c file, which has a continuous PID control loop and step which is being edited (see the function gimbal_control_step being implemented in a while(1) loop). 
+SRS-03 was also done through the code. We are able to see this directly in the main.c file, which has a continuous PID control loop and step which is being edited (see the function gimbal_control_step being implemented in a while(1) loop).
 
 For SRS-04, we are able to also see this implementation of PWM signals to the motors being done in main.c. We can look at OCR1A and OCR1B to see the PWM being set for the servo motors.
 
-For SRS-05, we made a relatively big edit. We changed it such that there was a mode for the gimbal's functionality being on and a mode for the gimbal's functionality being off. Check the boolean variable gimbaling in main.c as well as the flip. The joystick would be used to change the set point around which the gimbal would be able to do its stabilizaation. 
+For SRS-05, we made a relatively big edit. We changed it such that there was a mode for the gimbal's functionality being on and a mode for the gimbal's functionality being off. Check the boolean variable gimbaling in main.c as well as the flip. The joystick would be used to change the set point around which the gimbal would be able to do its stabilizaation.
 
-For SRS-06, this was also changed because the button was now used as a means of turning the gimbal stabilization on or off. 
+For SRS-06, this was also changed because the button was now used as a means of turning the gimbal stabilization on or off.
 
-For SRS-07, we were able to hardcode what we wanted the range of stabilization to look like, which is present in main.c. 
+For SRS-07, we were able to hardcode what we wanted the range of stabilization to look like, which is present in main.c.
 
-Finally, the software for SRS-08 also changed. Getting the wireless commands for pitch and roll over UART were very challenging, so instead we utilized a Flask web server with consistent GET and POST methods to store the mode of operation. This was much easier than utilizing UART. 
-
+Finally, the software for SRS-08 also changed. Getting the wireless commands for pitch and roll over UART were very challenging, so instead we utilized a Flask web server with consistent GET and POST methods to store the mode of operation. This was much easier than utilizing UART.
 
 #### 4.2 Validated SRS Commands
 
 In this section, we choose to validate these two commands:
 
-| ID     | Description                                                                                                                                                                                                                                                           |
-| ------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| SRS-02 | The firmware shall sample the 2 ADC channels recording data from the 2 axes of the joystick at a rate of at least 50 Hz and have a dead region at +/- 5% of the sensor range around the joystick sensor to prevent "stick drift".                                                                                                                 |
+| ID     | Description                                                                                                                                                                                                                       |
+| ------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| SRS-02 | The firmware shall sample the 2 ADC channels recording data from the 2 axes of the joystick at a rate of at least 50 Hz and have a dead region at +/- 5% of the sensor range around the joystick sensor to prevent "stick drift". |
 
 | SRS-03 | The firmware shall complete a PID control loop for each axis at least every 10 ms +/- 2 ms. This loop involves computing the corrective commands send to the servo motors from the error between measured and desired angle.                                                                                                                      |
 
@@ -290,9 +289,11 @@ Our validation of SRS-02 can be done through understanding the code, especially 
 #define JOY_UP_THRESHOLD (JOY_CENTER + JOY_DEADBAND)
 #define JOY_DOWN_THRESHOLD (JOY_CENTER - JOY_DEADBAND)
 ```
-The dead zone is ADC counts 180–480 out of 0–1023, which is +/- 14.7% of the sensor range (way over the 5% minimum margin for the deadzone). 
+
+The dead zone is ADC counts 180–480 out of 0–1023, which is +/- 14.7% of the sensor range (way over the 5% minimum margin for the deadzone).
 
 The 50 Hz sampling of the AD channels is done because of the code in the main.c file. The joystick_read_raw and joystick read_horizontal_step are done in main.c, which is controlled by this code:
+
 ```
 // delay between each loop iteration 
 #define CONTROL_LOOP_MS 10U
@@ -300,9 +301,9 @@ static const float CONTROL_DT_SEC = 0.010f;
 static const uint8_t DEBUG_PRINT_DIVIDER = 25U;
 ```
 
-This validates our understanding of SRS-02. 
+This validates our understanding of SRS-02.
 
-Our validation of SRS-03 can be done here now. We once again do this mainly though code. 
+Our validation of SRS-03 can be done here now. We once again do this mainly though code.
 
 Firstly, we can see that the time it takes for the control loop to iterate is just 10 ms:
 
@@ -336,6 +337,8 @@ We have achieved all the original HRS requirements besides the power related-HRS
 
 ### 4. Conclusion
 
-Ultimately we learned a lot as a group. We learned a lot about mechanical prototyping using CAD, writing drivers for external sensors, and even some basic web development through the implementation of a Flask web server. We think that the overall hardware-software integration of the project was good - as a whole, the project is a surprisingly usable product that can be used well from both a hardware and software perspective. We are proud of implementing out first complex CAD design, as well as implementing a lot of code for the IMU driver as well as the PID algorithm. We learned a lot about budgeting our time and planning out our work for engineering projects. With so many moving pieces, we learned a lot about being able to compartmentalize tasks in order to reach our overall end goal. We had to change our approach with the mechnical prototyping multiple times. We constantly messed up and printed pieces that didn't exactly fit what we were looking for or fit with out existing components. In the future, we will look to order parts earlier. We ordered motors too close to the deadline, and were thus incredibly disappointed to see that the motors wouldn't work with the device and the weight HRS requirements. One of the biggest obstacles we didn't anticipate was the difficulty in getting the Flask server to coordinate with the ESP-32 and subsequent Arduino code. It was challenging to make both the hardware and software communicate with each other bidrectionally, and we are proud of the way we ended up getting the Flask/ESP32 coordination to work out. The next step for this project is to tune the PID algorithm better and then create a more concrete mechanical enclosure for all the parts. As of right now, the boards and wires hang out, which is not ideal for a truly working product. 
+Ultimately we learned a lot as a group. We learned a lot about mechanical prototyping using CAD, writing drivers for external sensors, and even some basic web development through the implementation of a Flask web server. We think that the overall hardware-software integration of the project was good - as a whole, the project is a surprisingly usable product that can be used well from both a hardware and software perspective. We are proud of implementing out first complex CAD design, as well as implementing a lot of code for the IMU driver as well as the PID algorithm. We learned a lot about budgeting our time and planning out our work for engineering projects. With so many moving pieces, we learned a lot about being able to compartmentalize tasks in order to reach our overall end goal. We had to change our approach with the mechnical prototyping multiple times. We constantly messed up and printed pieces that didn't exactly fit what we were looking for or fit with out existing components. In the future, we will look to order parts earlier. We ordered motors too close to the deadline, and were thus incredibly disappointed to see that the motors wouldn't work with the device and the weight HRS requirements. One of the biggest obstacles we didn't anticipate was the difficulty in getting the Flask server to coordinate with the ESP-32 and subsequent Arduino code. It was challenging to make both the hardware and software communicate with each other bidrectionally, and we are proud of the way we ended up getting the Flask/ESP32 coordination to work out. The next step for this project is to tune the PID algorithm better and then create a more concrete mechanical enclosure for all the parts. As of right now, the boards and wires hang out, which is not ideal for a truly working product.
 
 ## References
+
+I2C Setup (WS3: Serial)
