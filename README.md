@@ -272,7 +272,7 @@ For SRS-05, we made a relatively big edit. We changed it such that there was a m
 
 For SRS-06, this was also changed because the button was now used as a means of turning the gimbal stabilization on or off.
 
-For SRS-07, we were able to hardcode what we wanted the range of stabilization to look like, which is present in main.c. We verified that this SRS was met with manual testing similar to what is seen in the demo video.
+For SRS-07, we were able to hardcode what we wanted the range of stabilization to look like, which is present in main.c.
 
 Finally, the software for SRS-08 also changed. Getting the wireless commands for pitch and roll over UART were very challenging, so instead we utilized a Flask web server with consistent GET and POST methods to store the mode of operation. This was much easier than utilizing UART.
 
@@ -280,6 +280,7 @@ Finally, the software for SRS-08 also changed. Getting the wireless commands for
 
 In this section, we choose to validate these two commands:
 
+<<<<<<< HEAD
 | ID     | Description                                                                                                                                                                                                                                                                                                                                       |
 | ------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | SRS-04 | The firmware shall generate the PWM signals for the two servo motors with PWM ranges from 1 ms to 2 ms, corresponding to the angular range of the servo motors.                                                                                                                                                                                   |
@@ -318,3 +319,5 @@ We have achieved all the original HRS requirements besides the power related-HRS
 Ultimately we learned a lot as a group. We learned a lot about mechanical prototyping using CAD, writing drivers for external sensors, and even some basic web development through the implementation of a Flask web server. We think that the overall hardware-software integration of the project was good. As a whole, the project is a surprisingly usable product that can be used well from both a hardware and software perspective. We are proud of implementing out first complex CAD design, as well as implementing a lot of code for the IMU driver and the PID algorithm. We learned a lot about budgeting our time and planning out our work for engineering projects. With so many moving pieces, we learned a lot about being able to compartmentalize tasks in order to reach our overall end goal. We had to change our approach with the mechnical prototyping multiple times. We constantly messed up and printed pieces that didn't exactly fit what we were looking for or fit with out existing components. In the future, we will look to order parts earlier. One of the biggest obstacles we didn't anticipate was the difficulty in getting the Flask server to coordinate with the ESP-32 and subsequent Arduino code. It was challenging to make both the hardware and software communicate with each other bidrectionally, and we are proud of the way we ended up getting the Flask/ESP32 coordination to work out. The next step for this project is to tune the PID algorithm better and then create a more concrete mechanical enclosure for all the parts. As of right now, the boards and wires hang out, which is not ideal for a truly working product.
 
 ## References
+
+I2C Setup (WS3: Serial)
