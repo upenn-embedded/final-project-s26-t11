@@ -280,7 +280,6 @@ Finally, the software for SRS-08 also changed. Getting the wireless commands for
 
 In this section, we choose to validate these two commands:
 
-<<<<<<< HEAD
 | ID     | Description                                                                                                                                                                                                                                                                                                                                       |
 | ------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | SRS-04 | The firmware shall generate the PWM signals for the two servo motors with PWM ranges from 1 ms to 2 ms, corresponding to the angular range of the servo motors.                                                                                                                                                                                   |
