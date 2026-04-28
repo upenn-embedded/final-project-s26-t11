@@ -239,7 +239,9 @@ The video can be found at this Google Drive link:
 
 ### 4 Software Requirements Specification (SRS) Validation and Results
 
-| ID     | Description                                                                                                                                                                                                                                                                                                                                       |
+#### 4.1 SRS Results
+
+| ID     | Description                                                                                                                                                                                                                                                           |
 | ------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | SRS-01 | The firmware shall read 3-axis acceleration data and 3-axis gyroscope data from the IMU over I2C at a rate of 100 Hz +/- 10 Hz.                                                                                                                                                                                                                   |
 | SRS-02 | The firmware shall sample the 2 ADC channels recording data from the 2 axes of the joystick at a rate of at least 50 Hz and have a dead region at +/- 5% of the sensor range around the joystick sensor to prevent "stick drift".                                                                                                                 |
@@ -250,7 +252,51 @@ The video can be found at this Google Drive link:
 | SRS-07 | The stabilization firmware shall reject any disturbances of +/- 15 degrees in the roll or pitch and return the platform to +/- 3 degrees of the requested roll/pitch within 500 ms.                                                                                                                                                               |
 | SRS-08 | The firmware shall accept wireless commands for pitch, roll, and mode received from ESP32 over UART and update the desired angle settings within 100ms of receiving update.                                                                                                                                                                       |
 
-SRS-01 was easy to validate, and we were able to do this through printing out values from the gyroscope to the terminal (which we did so with a lot of their functions). SRS-02 was verified primarily through the code - we manually set values for the stick drift which were substantially over the +/- 5% margin that we set earlier. SRS-03 was also done through the code. We are able to see this directly in the main.c file, which has a continuous PID control loop and step which is being edited. For SRS-04, we are able to also see this implementation of PWM signals to the motors being done in
+SRS-01 was easy to validate, and we were able to do this through printing out values from the gyroscope to the terminal (which we did so with a lot of their functions). 
+
+SRS-02 was verified primarily through the code - we manually set values for the stick drift which were substantially over the +/- 5% margin that we set earlier (see the values for JOY_DEADBAND) in joystick.c. 
+
+SRS-03 was also done through the code. We are able to see this directly in the main.c file, which has a continuous PID control loop and step which is being edited (see the function gimbal_control_step being implemented in a while(1) loop). 
+
+For SRS-04, we are able to also see this implementation of PWM signals to the motors being done in main.c. We can look at OCR1A and OCR1B to see the PWM being set for the servo motors.
+
+For SRS-05, we made a relatively big edit. We changed it such that there was a mode for the gimbal's functionality being on and a mode for the gimbal's functionality being off. Check the boolean variable gimbaling in main.c as well as the flip. The joystick would be used to change the set point around which the gimbal would be able to do its stabilizaation. 
+
+For SRS-06, this was also changed because the button was now used as a means of turning the gimbal stabilization on or off. 
+
+For SRS-07, we were able to hardcode what we wanted the range of stabilization to look like, which is present in main.c. 
+
+Finally, the software for SRS-08 also changed. Getting the wireless commands for pitch and roll over UART were very challenging, so instead we utilized a Flask web server with consistent GET and POST methods to store the mode of operation. This was much easier than utilizing UART. 
+
+
+#### 4.2 Validated SRS Commands
+
+In this section, we choose to validate these two commands:
+
+| ID     | Description                                                                                                                                                                                                                                                           |
+| ------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| SRS-01 | The firmware shall read 3-axis acceleration data and 3-axis gyroscope data from the IMU over I2C at a rate of 100 Hz +/- 10 Hz.                                                                                                                                                                                                                   |
+| SRS-02 | The firmware shall sample the 2 ADC channels recording data from the 2 axes of the joystick at a rate of at least 50 Hz and have a dead region at +/- 5% of the sensor range around the joystick sensor to prevent "stick drift".                                                                                                                 |
+
+We start by validating SRS_01. Here is what we were able to print to our serial terminal as a means of debugging information from the IMU.
+
+Our validation of SRS-02 can be done through understanding the code, especially in this section:
+
+'''
+#include <avr/io.h>
+#include <stdint.h>
+
+#define JOY_CENTER 330
+#define JOY_DEADBAND 150
+#define JOY_UP_THRESHOLD (JOY_CENTER + JOY_DEADBAND)
+#define JOY_DOWN_THRESHOLD (JOY_CENTER - JOY_DEADBAND)
+'''
+The dead zone is ADC counts 180–480 out of 0–1023, which is +/- 14.7% of the sensor range (way over the 5% minimum margin for the deadzone). 
+
+The 50 Hz sampling of the AD channels is done because of the code in the main.c file. The joystick_read_raw and joystick read_horizontal_step
+
+Applied in joystick_read_vertical_step() at joystick.c:38-44 and joystick_read_horizontal_step() at joystick.c:46-52
+≥50 Hz sampling on both ADC channels — both joystick_read_raw() (ADC0) and joystick_read_horizontal_raw() (ADC1) are called inside the 100 Hz control loop (CONTROL_LOOP_MS = 10U at main.c:20)
 
 ### 3.2 Hardware Requirements Specification (HRS) Validation and Results
 

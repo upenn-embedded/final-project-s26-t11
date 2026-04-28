@@ -9,7 +9,7 @@
 void joystick_init(void)
 {
     DDRC  &= ~((1 << DDC0) | (1 << DDC1));
-    PORTC &= ~((1 << PORTC0) | (1 << PORTC1));inputs
+    PORTC &= ~((1 << PORTC0) | (1 << PORTC1));
 
     ADMUX  = (1 << REFS0);
     ADCSRA = (1 << ADEN) | (1 << ADPS2) | (1 << ADPS1) | (1 << ADPS0);
