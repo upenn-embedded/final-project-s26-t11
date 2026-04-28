@@ -306,9 +306,9 @@ For a refresher, here are what our initial HRS ideas were:
 | HRS-06 | The joystick shall provide two analog voltage output readable by the ATmega328PB ADC channels. A separate button shall control mode switches. |
 | HRS-07 | The system shall support an ESP32 with 5V supply communicating with ATmega328PB over UART.                                                    |
 
-HRS-01: We also weren't able to directly verfiy that the servo motors exert a certain amount of torque through a physical measurement tool. However, we measured the supplied voltage to the servo motors and based off their data sheet determined the supplied torque expected at a supply voltage of 6V far exceeds our minimum requirement. 
+HRS-01: We also weren't able to directly verfiy that the servo motors exert a certain amount of torque through a physical measurement tool. However, we measured the supplied voltage to the servo motors and based off their data sheet determined the supplied torque expected at a supply voltage of 6V far exceeds our minimum requirement.
 
-HRS-02: We also used a protactor to measure the performance of the PD stabilization and were easily able to acheive 90 degrees of rotation in each direction, far exceeding our HRS. 
+HRS-02: We also used a protactor to measure the performance of the PD stabilization and were easily able to acheive 90 degrees of rotation in each direction, far exceeding our HRS.
 
 HRS-03: We have also verified that the ATmega communicates over I2C with the IMU as we can visibly validate that the system keeps the platform level. We tested with a logic analyzer to verify that the packets were 16 bits in a similar process to WS3.
 
@@ -332,3 +332,4 @@ Ultimately we learned a lot as a group. We learned a lot about mechanical protot
 ## References
 
 I2C Setup (WS3: Serial)
+Joystick Setup (Lab 4: Pong)
