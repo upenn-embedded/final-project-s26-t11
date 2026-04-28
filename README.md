@@ -243,7 +243,7 @@ The video can be found at this YouTube link:
 
 ### 3. 400x400 Image
 
-![](./image/README/resized_400x400.png)
+![1777345095613](image/README/1777345095613.jpg)
 
 ### 4 Software Requirements Specification (SRS) Validation and Results
 
