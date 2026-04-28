@@ -31,22 +31,26 @@ static const uint16_t CALIBRATION_SAMPLES = 200U;
 // PD control gains tuned experimentally
 // static const float PITCH_KP = 3.5f;
 // static const float ROLL_KP  = 3.5f;
-static const float PITCH_KP = 0.8f;
-static const float ROLL_KP  = 0.8f;
+static const float PITCH_KP = 0.78f;
+static const float ROLL_KP  = 0.48f;
 
 // static const float PITCH_KI = 0.005f;
 // static const float ROLL_KI = 0.05f;
 
-static const float PITCH_KI = 0.5f;
+static const float PITCH_KI = 0.75f;
 static const float ROLL_KI = 0.5f;
+
 // static const float PITCH_KI = 0.0f;
 // static const float ROLL_KI = 0.0f;
 
 
 // static const float PITCH_KD = 0.05f;
 // static const float ROLL_KD = 0.005f;
-static const float PITCH_KD = 0.0015f;
-static const float ROLL_KD = 0.0015f;
+
+static const float PITCH_KD = 0.004f;
+static const float ROLL_KD = 0.001f;
+// static const float PITCH_KD = 0.0f;
+// static const float ROLL_KD = 0.0f;
 
 // integral term limits in deg*s to prevent windup
 static const float PITCH_INT_LIM_DEG_S = 40.0f;
@@ -412,17 +416,17 @@ int main(void) {
 
             servo_set_us(pitch_us, roll_us);
         }
-        debug_divider++;
-        if (debug_divider >= DEBUG_PRINT_DIVIDER) {
-            debug_divider = 0U;
-            print_control_debug(&attitude, &control_debug, pitch_us, roll_us);
-            printf("joy_v=%u step=%d target=(",
-                   joystick_read_raw(), (int)joystick_read_vertical_step());
-            print_thousandths((int32_t)(g_target_pitch_deg * 1000.0f));
-            printf(",");
-            print_thousandths((int32_t)(g_target_roll_deg * 1000.0f));
-            printf(")\r\n");
-        }
+        // debug_divider++;
+        // if (debug_divider >= DEBUG_PRINT_DIVIDER) {
+        //     debug_divider = 0U;
+        //     print_control_debug(&attitude, &control_debug, pitch_us, roll_us);
+        //     printf("joy_v=%u step=%d target=(",
+        //            joystick_read_raw(), (int)joystick_read_vertical_step());
+        //     print_thousandths((int32_t)(g_target_pitch_deg * 1000.0f));
+        //     printf(",");
+        //     print_thousandths((int32_t)(g_target_roll_deg * 1000.0f));
+        //     printf(")\r\n");
+        // }
         _delay_ms(CONTROL_LOOP_MS);
     }
 }
