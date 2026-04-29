@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>B.A.T.R.A. — Balanced Automated Two-axis Rotational Assembly</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --navy:   #0d1b2a;
+      --blue:   #1b4f8a;
+      --accent: #3a86ff;
+      --light:  #f4f7fb;
+      --white:  #ffffff;
+      --text:   #1a1a2e;
+      --muted:  #5a6a7a;
+      --border: #d0dae6;
+      --code-bg:#eef2f7;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      color: var(--text);
+      background: var(--white);
+      line-height: 1.7;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: sticky; top: 0; z-index: 100;
+      background: var(--navy);
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0.75rem 2rem;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.35);
+    }
+    nav .brand { color: var(--white); font-weight: 700; font-size: 1.1rem; letter-spacing: 0.05em; }
+    nav .links { display: flex; gap: 1.5rem; flex-wrap: wrap; }
+    nav .links a {
+      color: #a8c4e0; text-decoration: none; font-size: 0.85rem; font-weight: 500;
+      transition: color 0.2s;
+    }
+    nav .links a:hover { color: var(--white); }
+
+    /* ── HERO ── */
+    .hero {
+      background: linear-gradient(135deg, var(--navy) 0%, var(--blue) 100%);
+      color: var(--white);
+      padding: 5rem 2rem 4rem;
+      text-align: center;
+    }
+    .hero h1 { font-size: clamp(2rem, 5vw, 3.2rem); letter-spacing: 0.03em; margin-bottom: 0.5rem; }
+    .hero .subtitle { font-size: 1.1rem; opacity: 0.8; margin-bottom: 2rem; }
+    .hero .team-badges { display: flex; justify-content: center; flex-wrap: wrap; gap: 0.75rem; margin-bottom: 2rem; }
+    .badge {
+      background: rgba(255,255,255,0.12);
+      border: 1px solid rgba(255,255,255,0.25);
+      border-radius: 999px;
+      padding: 0.35rem 1rem;
+      font-size: 0.85rem;
+    }
+    .hero-links { display: flex; justify-content: center; gap: 1rem; flex-wrap: wrap; }
+    .btn {
+      display: inline-block; padding: 0.6rem 1.4rem; border-radius: 6px;
+      font-weight: 600; font-size: 0.9rem; text-decoration: none; transition: opacity 0.2s;
+    }
+    .btn:hover { opacity: 0.85; }
+    .btn-primary { background: var(--accent); color: #fff; }
+    .btn-outline { border: 2px solid rgba(255,255,255,0.5); color: #fff; }
+
+    /* ── LAYOUT ── */
+    .container { max-width: 960px; margin: 0 auto; padding: 0 1.5rem; }
+
+    section { padding: 3.5rem 0; border-bottom: 1px solid var(--border); }
+    section:last-child { border-bottom: none; }
+
+    h2 {
+      font-size: 1.65rem; color: var(--navy); margin-bottom: 1.25rem;
+      padding-bottom: 0.5rem; border-bottom: 3px solid var(--accent);
+      display: inline-block;
+    }
+    h3 { font-size: 1.2rem; color: var(--blue); margin: 1.75rem 0 0.75rem; }
+    h4 { font-size: 1rem; color: var(--muted); margin: 1.25rem 0 0.5rem; text-transform: uppercase; letter-spacing: 0.06em; }
+
+    p { margin-bottom: 1rem; }
+    ul { margin: 0.5rem 0 1rem 1.5rem; }
+    li { margin-bottom: 0.35rem; }
+
+    a { color: var(--accent); }
+
+    /* ── CALLOUT ── */
+    .callout {
+      background: #fffbe6; border-left: 4px solid #f0c040;
+      padding: 0.85rem 1.25rem; border-radius: 0 6px 6px 0;
+      margin-bottom: 1.5rem; font-size: 0.95rem;
+    }
+
+    /* ── TABLES ── */
+    .table-wrap { overflow-x: auto; margin: 1rem 0 1.5rem; }
+    table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
+    thead tr { background: var(--navy); color: var(--white); }
+    thead th { padding: 0.7rem 1rem; text-align: left; font-weight: 600; }
+    tbody tr:nth-child(even) { background: var(--light); }
+    tbody tr:hover { background: #ddeeff; }
+    td { padding: 0.65rem 1rem; border-bottom: 1px solid var(--border); vertical-align: top; }
+    td:first-child { white-space: nowrap; font-weight: 600; color: var(--blue); }
+
+    /* ── CODE ── */
+    pre {
+      background: var(--code-bg); border: 1px solid var(--border);
+      border-radius: 6px; padding: 1rem 1.25rem; overflow-x: auto;
+      font-size: 0.85rem; margin: 1rem 0 1.5rem; line-height: 1.55;
+    }
+    code { font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace; }
+    p code, li code {
+      background: var(--code-bg); padding: 0.15em 0.4em; border-radius: 4px; font-size: 0.88em;
+    }
+
+    /* ── IMAGES ── */
+    .img-grid { display: flex; flex-wrap: wrap; gap: 1rem; margin: 1rem 0; }
+    .img-grid img { max-width: 100%; border-radius: 8px; border: 1px solid var(--border); flex: 1 1 280px; object-fit: cover; max-height: 320px; }
+    .img-single { margin: 1rem 0; }
+    .img-single img { max-width: 100%; border-radius: 8px; border: 1px solid var(--border); display: block; margin: 0 auto; }
+    .img-row { display: flex; flex-wrap: wrap; gap: 0.75rem; margin: 1rem 0; }
+    .img-row img { flex: 1 1 180px; max-width: 100%; border-radius: 8px; border: 1px solid var(--border); object-fit: cover; max-height: 260px; }
+
+    /* ── VIDEO EMBED ── */
+    .video-wrap {
+      position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden;
+      border-radius: 10px; border: 1px solid var(--border); margin: 1rem 0;
+    }
+    .video-wrap iframe {
+      position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0;
+    }
+
+    /* ── PERSON LIST ── */
+    .person-list { list-style: none; margin-left: 0; }
+    .person-list li { padding: 0.3rem 0; }
+    .person-list strong { color: var(--navy); }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--navy); color: #7a8fa6;
+      text-align: center; padding: 2rem 1rem; font-size: 0.85rem;
+    }
+    footer a { color: #a8c4e0; }
+
+    @media (max-width: 600px) {
+      nav .links { display: none; }
+      .hero { padding: 3rem 1.5rem 2.5rem; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <span class="brand">B.A.T.R.A.</span>
+  <div class="links">
+    <a href="#proposal">Proposal</a>
+    <a href="#sprint1">Sprint 1</a>
+    <a href="#sprint2">Sprint 2</a>
+    <a href="#mvp">MVP</a>
+    <a href="#final">Final Report</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <h1>B.A.T.R.A.</h1>
+  <p class="subtitle">Balanced Automated Two-axis Rotational Assembly &mdash; Team 11</p>
+  <div class="team-badges">
+    <span class="badge">Eugene Veksler</span>
+    <span class="badge">Maxim Veksler</span>
+    <span class="badge">Ishan Mungikar</span>
+  </div>
+  <div class="hero-links">
+    <a class="btn btn-primary" href="https://github.com/upenn-embedded/final-project-s26-t11">GitHub Repo</a>
+    <a class="btn btn-outline" href="https://classroom.github.com/a/-Acvnhrq">Review Due Date</a>
+  </div>
+</div>
+
+<div class="container">
+
+  <div style="padding: 1.5rem 0 0;">
+    <div class="callout">
+      <strong>Hey Graders!</strong> The Final Project Reflection and Submission is in the
+      <a href="#final">Final Report</a> section at the bottom of this page.
+    </div>
+  </div>
+
+  <!-- ═══════════ PROPOSAL ═══════════ -->
+  <section id="proposal">
+    <h2>Final Project Proposal</h2>
+
+    <h3>1. Abstract</h3>
+    <p>B.A.T.R.A. is an automated two-axis IMU-stabilized camera gimbal with joystick control. An inertial measurement unit continuously determines the camera's orientation and a PID control algorithm drives two servo motors to keep the camera stable. An analog joystick is used by the operator to set the horizontal and vertical viewing angle. Bare metal C firmware on an ATmega328PB is used to maintain the set angle. Additionally, an ESP32 Wi-Fi module is utilized to wireless control the horizontal and vertical viewing angle.</p>
+
+    <h3>2. Motivation</h3>
+    <p>Any time you watch a smooth aerial drone shot, use a handheld camera without a nauseating shake, or watch a robot navigate a warehouse, there is some kind of video stabilization system working behind the scences. Video stabilization was always essential for high quality videos or movies, but now it has become crucial for computer vision applications where stable video makes consistent object detection possible.</p>
+    <p>Although video gimbals aren't a niche topic, the process of desiging a gimbal is very application specific and tackles the core challenge of decreasing the noise in input data. By also instituting remote control with our project, we allow this mechanism to be potentially extended in applications involving autonomous vehicles and drones.</p>
+
+    <h3>3. System Block Diagram</h3>
+    <div class="img-single"><img src="B.A.T.R.A.%20System%20Block%20Diagram.png" alt="B.A.T.R.A. System Block Diagram"></div>
+
+    <h3>4. Design Sketches</h3>
+    <div class="img-grid">
+      <img src="pic1.jpg" alt="Design Sketch 1">
+      <img src="pic2.jpg" alt="Design Sketch 2">
+    </div>
+
+    <h3>5. Software Requirements Specification (SRS)</h3>
+    <p>The software for B.A.T.R.A. is responsible for reading sensor data, running the stabilization control loop, processing user input on the joy stick, and driving the servo motor output. All of this is meant to be done in real time on an ATmega328PB running bare metal C. We also have an ESP32 Wi-Fi module which allows for wireless communication with a device running a web application to remotely control the orientation of the camera.</p>
+
+    <h4>5.1 Definitions, Abbreviations</h4>
+    <ul>
+      <li><strong>IMU</strong> — Inertial Measurement Unit (Provides acceleration and gyroscope data)</li>
+      <li><strong>PID</strong> — Proportional-Integral-Derivative control algorithm</li>
+      <li><strong>PWM</strong> — Pulse Width Modulation (Signal format used for controlling servo motor position)</li>
+      <li><strong>ADC</strong> — Analog to Digital Converter (Reads analog voltage values and converts into digital format)</li>
+      <li><strong>I2C</strong> — Inter-Integrated Circuit Communication Protocol (Serial bus communication used to communicate with IMU)</li>
+      <li><strong>Dead Region</strong> — Position range around joystick center that is read as a center input to reduce noise due to misalignment in joy stick construction</li>
+    </ul>
+
+    <h4>5.2 Functionality</h4>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>ID</th><th>Description</th></tr></thead>
+        <tbody>
+          <tr><td>SRS-01</td><td>The firmware shall read 3-axis acceleration data and 3-axis gyroscope data from the IMU over I2C at a rate of 100 Hz +/- 10 Hz.</td></tr>
+          <tr><td>SRS-02</td><td>The firmware shall sample the 2 ADC channels recording data from the 2 axes of the joystick at a rate of at least 50 Hz and have a dead region at +/- 5% of the sensor range around the joystick sensor to prevent "stick drift".</td></tr>
+          <tr><td>SRS-03</td><td>The firmware shall complete a PID control loop for each axis at least every 10 ms +/- 2 ms. This loop involves computing the corrective commands send to the servo motors from the error between measured and desired angle.</td></tr>
+          <tr><td>SRS-04</td><td>The firmware shall generate the PWM signals for the two servo motors with PWM ranges from 1 ms to 2 ms, corresponding to the angular range of the servo motors.</td></tr>
+          <tr><td>SRS-05</td><td>The firmware shall support two operating modes. One mode is a stabilized hold where the current pitch and roll angles are maintained, and the other mode is where a joystick is used sets the desired stabilization angle (and thus the camera position can be controlled from the joystick). The modes can be selected using a mode button.</td></tr>
+          <tr><td>SRS-06</td><td>When the mode select button is held for at least 1 second, the firmware shall level out the platform within 2 seconds.</td></tr>
+          <tr><td>SRS-07</td><td>The stabilization firmware shall reject any disturbances of +/- 15 degrees in the roll or pitch and return the platform to +/- 3 degrees of the requested roll/pitch within 500 ms.</td></tr>
+          <tr><td>SRS-08</td><td>The firmware shall accept wireless commands for pitch, roll, and mode received from ESP32 over UART and update the desired angle settings within 100ms of receiving update.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>6. Hardware Requirements Specification (HRS)</h3>
+    <p>The hardware forms the physical construction and control of B.A.T.R.A. The sensors, frame, power system, switches, motors, bearings, and user-interface components provide functionality to the software.</p>
+
+    <h4>6.1 Definitions, Abbreviations</h4>
+    <ul>
+      <li><strong>Servo</strong> — A servo motor with an integrted gearbox that is controlled via PWM signal communication</li>
+      <li><strong>LDO</strong> — Low-Dropout Regulator (A voltage regulator with a low dropout)</li>
+      <li><strong>DOF</strong> — Degrees of Freedom</li>
+    </ul>
+
+    <h4>6.2 Functionality</h4>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>ID</th><th>Description</th></tr></thead>
+        <tbody>
+          <tr><td>HRS-01</td><td>The system shall use two servos each providing at least 1.8 kg-cm of torque.</td></tr>
+          <tr><td>HRS-02</td><td>The mechanical frame shall provide two independent rotational axes (roll and pitch) with at least +/- 30 degrees of rotation on each axis.</td></tr>
+          <tr><td>HRS-03</td><td>An IMU shall communicate with ATmega328PB over I2C to provide 16-bit acceleration and gyroscope data.</td></tr>
+          <tr><td>HRS-04</td><td>The balanced platform shall support a camera of at least 30 grams without degraded performance.</td></tr>
+          <tr><td>HRS-05</td><td>The system shall be powered by 5 AA batteries with a regulated 5V rail for logic components and shall operate for at least 30 minutes.</td></tr>
+          <tr><td>HRS-06</td><td>The joystick shall provide two analog voltage output readable by the ATmega328PB ADC channels. A separate button shall control mode switches.</td></tr>
+          <tr><td>HRS-07</td><td>The system shall support an ESP32 with 5V supply communicating with ATmega328PB over UART.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>7. Bill of Materials (BOM)</h3>
+    <p>The B.A.T.R.A. system requires several major hardware components to meet the stabilization, control, and power requirements defined in the SRS and HRS. The ATmega328PB serves as the main processor, executing bare-metal C firmware that reads sensor data, runs the stabilization control loop, processes joystick input, and generates PWM signals for the servo motors. An ESP32 Feather is also used for its Wi-Fi connection. It listens to HTTP requests from a webapp and communicates with the main MCU (ATmega328PB) via UART, allowing for wireless control of the gimbal. To measure the orientation of the camera platform, the system uses an ISM330DHCX 6-DoF IMU, which provides high-resolution accelerometer and gyroscope measurements over the I2C interface. These measurements are used by the control algorithm to estimate pitch and roll and reject disturbances. User input is provided through a two-axis analog joystick module, which connects to the ATmega's ADC channels and allows the operator to command the desired viewing angle, and a momentary pushbutton, which switches between stabilization modes. Mechanical actuation is provided by two TowerPro SG-5010 servo motors, which receive PWM control signals from the MCU and rotate the pitch and roll axes of the gimbal frame to maintain or adjust the camera's orientation. The mechanical structure consists of a two-axis gimbal frame and camera mounting plate, which physically support the camera and allow independent pitch and roll motion. Finally, the system is powered by a five-AA battery pack supplying a 5V buck converter, which provides a stable regulated voltage rail for the MCU, sensors, and actuators while accommodating the current spikes required by the servos. Together, these components enable real-time sensing, control, and mechanical stabilization of the camera platform.</p>
+    <p><a href="https://docs.google.com/spreadsheets/d/1fepphumKk5D9FUeKqcSwMe_T4UKh1L_EezRMtACb3O0/edit?usp=sharing">Link to google sheet BOM &rarr;</a></p>
+
+    <h3>8. Final Demo Goals</h3>
+    <p>On demo day, B.A.T.R.A. will be demonstrated as a handheld two-axis stabilized camera platform. The gimbal assembly will be mounted to a small handle so that one team member can manually shift the angle by tilting and rotating the device while the stabilization system actively compensates to keep the camera level.</p>
+    <p>During the demonstration, the system will be operated in two modes through both hardware (joystick and button) as well as through remote control:</p>
+    <ul>
+      <li><strong>Stabilized Hold Mode:</strong> The gimbal will maintain the current pitch and roll orientation even when the user tilts the base by up to 15 degrees. This will demonstrate the IMU-based stabilization and PID control loop rejecting disturbances.</li>
+      <li><strong>Joystick Control Mode:</strong> The analog joystick will allow the user to adjust the desired viewing angle of the camera while stabilization remains active. The camera will smoothly move to the new commanded pitch and roll angles while continuing to reject disturbances.</li>
+    </ul>
+    <p>The demo will take place indoors on a tabletop and does not require outdoor space. The system will be powered by a battery pack, allowing it to operate without external power during the demonstration. To visually verify stabilization performance, a small camera (or weighted payload representing a camera) will be mounted to the gimbal. The stabilization will be demonstrated by manually rotating the base platform and showing that the camera mount remains approximately level relative to gravity.</p>
+
+    <h3>9. Sprint Planning</h3>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Milestone</th><th>Functionality Achieved</th><th>Distribution of Work</th></tr></thead>
+        <tbody>
+          <tr>
+            <td>Sprint #1</td>
+            <td>We want to finish the software that allows us to calculate the needed rotation on the servos. We want to have the peripherals connected to the controller in order to check preliminary activity and movement of the servos as the pitch and the roll of the handle changes.</td>
+            <td>Max will focus on the implementation of the primary algorithm to calculate the servo orientation with relation to the camera's positioning. Eugene will focus on the hardware by soldering the peripherals together and setting up the ESP32's functionality. Ishan will try and finish the preliminary design and functionality for the web application.</td>
+          </tr>
+          <tr>
+            <td>Sprint #2</td>
+            <td>At this point, we would like to have the 3D printing for the chassis be completely complete. This will allow us to attempt to put the final product together as we put in the MCU and the other peripherals into the allocated space within the device frame.</td>
+            <td>Ishan will work on the design of the platform in CAD. Eugene will work on the design of the handle and the rod connecting the two servo motors together. Max will focus on the design of the enclosure for the servo motors themselves.</td>
+          </tr>
+          <tr>
+            <td>MVP Demo</td>
+            <td>We would like to be able to place a camera on our device and record the footage that out at this stage. This will allow us to test and make any changes to the software and algorithm as necessary. Finally, we would also like to have the web application working at this stage to enable remote control of our gimbal system.</td>
+            <td>Max will continue with debugging and testing of the core software algorithm. Eugene will work on the final CAD schematic of the enclosure to makke sure the device is comfortable to use and appropriately sized. Ishan will finish the web application and ensure that it has functionality.</td>
+          </tr>
+          <tr>
+            <td>Final Demo</td>
+            <td>At this point, we would like to have the entire system working. We will display how recorded footage from our camera ends up looking more stabliized following the demonstration of our gimbal. We will also display the ability of our web application to control the device remotely, allowing for users to see how they can manipulate and use the device in different ways.</td>
+            <td>Max will continue with debugging and testing of the core software with the servo motors. Eugene and Ishan will make sure that the mode-switching functionality and the joystick work as expected both through the web application and through hardware.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p><strong>This is the end of the Project Proposal section. The remaining sections will be filled out based on the milestone schedule.</strong></p>
+  </section>
+
+  <!-- ═══════════ SPRINT 1 ═══════════ -->
+  <section id="sprint1">
+    <h2>Sprint Review #1</h2>
+    <p>We completed the sprint review with Aarti on 4/3 at 11:15 AM!</p>
+
+    <h3>Last week's progress</h3>
+    <p>We made a small 2-axis gimbal with some servos from Detkin. This gimbal setup will serve as a proof of concept to allow one of our members to focus on the PID algorithm/tuning while the other members focus on mechanical design and the web-based functionality. We also designed some basic CAD files for the actual gimbal, and will resize the enclosure depending on the final camera with that we choose for the MVP and final product.</p>
+
+    <h3>Current state of project</h3>
+    <p>From a software perspective, we have a lot of work in regards to designing the PID algorithm and the web application for the virtual control. That will be the main focus going forward into the next week.</p>
+    <p>The hardware seems to be mostly working at this point in time. We are planning on just normally using the ATMega and the ESP32, without too much in the way of complex schematic design or wiring.</p>
+    <p>We have a decent amount of work to do in relation to the mechnical design of the project. We need to finish ordering parts, designing an enclosure for our MCUs, and figuring out which camera we want to use within our already CAD-ded enclosure. This will be a big focus for two of our team members.</p>
+
+    <div class="img-grid">
+      <img src="image/README/1775259451850.png" alt="Sprint 1 Progress">
+      <img src="image/README/1775258134190.jpg" alt="Sprint 1 Hardware">
+    </div>
+
+    <h3>Next week's plan</h3>
+    <ul class="person-list">
+      <li><strong>Max:</strong> Work on tuning the PID algorithm and get a working version complete with an IMU and a Go-Pro camera.</li>
+      <li><strong>Ishan:</strong> Work on the web based functionality and have it work with the currently printed PID tester.</li>
+      <li><strong>Eugene:</strong> Focus on mechanical design through CAD of an MCU enclosure and finalize parts for mechanical design.</li>
+    </ul>
+  </section>
+
+  <!-- ═══════════ SPRINT 2 ═══════════ -->
+  <section id="sprint2">
+    <h2>Sprint Review #2</h2>
+    <p>We completed sprint review 2 on Friday morning 4/10!</p>
+
+    <h3>Last week's progress</h3>
+    <p>We designed a complete CAD of our final design for the gimbal, including two handles, a camera mount, and housing for motors and other parts. We also wrote code to read data from an IMU. We initially tried to interface with a BNO085 sensor, which automatically performs sensor fusion using an accelerometer, gyroscope, and magnetometer to output clean angle data. However, this sensor is designed for use with Arduino boards, and was very hard to interface with the ATMega328PB. After a few attempts we switched to a standard IMU which gives raw accelerometer and gyroscope data, which worked well. We also finalized our parts list and ordered the remaining parts we needed. The most important part was a pair of servo motors designed for fast response rate, which is important in achieving good camera stabilization.</p>
+
+    <h3>Current state of project</h3>
+    <p>We are on our way in terms of both software and hardware! We developed some boilerplate code to read IMU data and control a servo motor. Designing the PID algorithm is still the most pressing task which we will focus on in the next week.</p>
+    <p>The hardware is mostly working so far, and the remaining tasks are to interface all the parts together.</p>
+
+    <div class="img-single"><img src="image/README/1775931722074.png" alt="Sprint 2 CAD Progress"></div>
+
+    <h3>Next week's plan</h3>
+    <p>The main plan for next week is to 3D print the parts we designed in CAD, write the PID algorithm, and integrate all the parts together.</p>
+    <ul class="person-list">
+      <li><strong>Max:</strong> Work on PID algorithm and optimize sensor fusion + PID for smooth control.</li>
+      <li><strong>Eugene:</strong> 3D print parts and ensure everything fits as planned. Will likely need to reprint a couple times.</li>
+      <li><strong>Ishan:</strong> Work on overall system integration and begin designing web interface.</li>
+    </ul>
+  </section>
+
+  <!-- ═══════════ MVP ═══════════ -->
+  <section id="mvp">
+    <h2>MVP Demo</h2>
+
+    <h3>Show a system block diagram &amp; explain the hardware implementation.</h3>
+    <div class="img-single"><img src="boom.jpg" alt="System Block Diagram MVP"></div>
+    <p>From our system block diagram, we chose to use a 7.4V LiPo battery to supply power to our motors instead of 5S AA batteries. For our demo we simply powered the motors off a wall power supply for now. However, for the final implementation, we will have a buck converter step down the battery voltage to 5V for the motors and MCU. Additionally, we have implemented our IMU from the block diagram but haven't implemented the joystick and button functionality. We also have yet to implement the ESP32 and IoT functionality. However, the servo motors control and PD algorithm functionality have successfully been implemented for the demo.</p>
+
+    <h3>Explain your firmware implementation, including application logic and critical drivers you've written.</h3>
+    <p>We separated our logic into I2C driver, the PD algorithm, and a wrapper for the IMU to make the references to I2C easier.</p>
+    <p>The I2C driver essentially works to set up an I2C connection between the IMU and the central microcontroller. We use the TWI of the ATMega and enable certain bits to match the specifications of our communication. We have functions for both I2C start and stop along with more functions to write and read an ack/nack bit.</p>
+    <p>The LSM6DS0 IMU wrappers essentially modularize the functions to make them easier to access in our PD algorithm. We set up some structs in C to make it easy to reference key measurements in our code later. This part of the code also contains the main calibration - as we take gyroscope and accelerometer data and then come up with an amount the servo motor should turn in order for the gimbal to be calibrated effectively. We also write code to update the general state of the IMU in this section.</p>
+    <p>Finally, we write our PD algorithm in main.c. In the gimbal_control_step line, we were able to use the Kp and Kd constants referenced earlier to determine a degree for both the pitch and the roll angles. We perform some more filtering to figure out the best way to stabilize the device relative to the level of rotation. This is going to be the main focus for the key code going forward.</p>
+
+    <h3>Demo your device.</h3>
+    <p>We did this successfully!</p>
+
+    <h3>Have you achieved some or all of your Software Requirements Specification (SRS)?</h3>
+    <p>Show how you collected data and the outcomes.</p>
+    <p>For the SRS we have successfully set up the software to reach the 3-axis acceleration and 3-axis gyroscope data. We verified using serial communication that this occurs at a rate of about 105 times per second, meeting our SRS. We have yet to use 2 ADC channels to read joystick data. However, we have implmened a PD control loop which samples at about every 11ms which we verified using serial communication. We have also verified that the software generates two PWM signals for the software through oscilloscope obervation and watching the motors move. The ranges do meet 1ms to 2ms as observed from o-scope. We have yet to implement the opperating modes or the button but have implemented the stabilization firmware and used a protactor to verify that we cn reject disturbances of 60 degrees in each direction far faster than 500ms (in truth about 200ms). We have also yet to implement the wireless communication.</p>
+
+    <h3>Have you achieved some or all of your Hardware Requirements Specification (HRS)?</h3>
+    <p>Show how you collected data and the outcomes.</p>
+    <p>We have acheived all the HRS requirements besides the ones involving the joystick and the ESP32. However, we do have two servo motors that have ratings of at least 1.8kg-cm of torque so we know that requirement has met. We also used a protactor to measure the performance of the PD stabilization and were easily able to acheive 60 degrees of rotation in each direction, far exceeding our HRS. We have also verified that the ATmega communicates over I2C with the IMU as we can visibly validate that the system keeps the platform level. However, we have not yet verified that our system can run for 30 minutes and we have not verified the weight the camera can support. Additionally, we have successfully implemented the 3D design of the system as seen below.</p>
+    <div class="img-single"><img src="IMG_1322.jpeg" alt="3D Design"></div>
+
+    <h3>Show off the remaining elements that will make your project whole: mechanical casework, supporting graphical user interface (GUI), web portal, etc.</h3>
+    <p>We don't yet have a super cool GUI and web portal, but we do have some effective mechanical casework.</p>
+    <div class="img-single"><img src="mechDesign.jpg" alt="Mechanical Design"></div>
+
+    <h3>What is the riskiest part remaining of your project?</h3>
+    <p>One of our motors broke, and we are curious to see if we can get another motor in time. Additionally, there is a lot more work that has to be done with regards to mechanical casework (both chassis as well as power distribution) and design, which I think is going to be the key thing to figure out as we finalize the design.</p>
+
+    <h3>How do you plan to de-risk this?</h3>
+    <p>We plan to de-risk this by splitting up the mechnical distribution and power distribution amongst ourselves well. Eugene is going to focus on the mechanical casework, whereas Ishan and Max will figure out how to make the power distribution work effectively.</p>
+  </section>
+
+  <!-- ═══════════ FINAL REPORT ═══════════ -->
+  <section id="final">
+    <h2>Final Report</h2>
+
+    <h3>1. Video</h3>
+    <p>The video can be found at this YouTube link: <a href="https://youtu.be/dXvFaK9tz80">https://youtu.be/dXvFaK9tz80</a></p>
+    <div class="video-wrap">
+      <iframe src="https://www.youtube.com/embed/dXvFaK9tz80" allowfullscreen></iframe>
+    </div>
+
+    <h3>2. Images</h3>
+    <div class="img-grid">
+      <img src="image/README/Final%20Images/IMG_4895.jpeg" alt="Final Image 1">
+      <img src="image/README/Final%20Images/IMG_4897.jpeg" alt="Final Image 2">
+      <img src="image/README/Final%20Images/IMG_4899.jpeg" alt="Final Image 3">
+      <img src="image/README/Final%20Images/IMG_4900.jpeg" alt="Final Image 4">
+    </div>
+
+    <h3>3. 400x400 Image</h3>
+    <div class="img-single"><img src="image/README/1777345095613.jpg" alt="400x400 Cover Image" style="max-width:400px;"></div>
+
+    <h3>4. Software Requirements Specification (SRS) Validation and Results</h3>
+
+    <h4>4.1 SRS Results</h4>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>ID</th><th>Description</th></tr></thead>
+        <tbody>
+          <tr><td>SRS-01</td><td>The firmware shall read 3-axis acceleration data and 3-axis gyroscope data from the IMU over I2C at a rate of 100 Hz +/- 10 Hz.</td></tr>
+          <tr><td>SRS-02</td><td>The firmware shall sample the 2 ADC channels recording data from the 2 axes of the joystick at a rate of at least 50 Hz and have a dead region at +/- 5% of the sensor range around the joystick sensor to prevent "stick drift".</td></tr>
+          <tr><td>SRS-03</td><td>The firmware shall complete a PID control loop for each axis at least every 10 ms +/- 2 ms. This loop involves computing the corrective commands send to the servo motors from the error between measured and desired angle.</td></tr>
+          <tr><td>SRS-04</td><td>The firmware shall generate the PWM signals for the two servo motors with PWM ranges from 1 ms to 2 ms, corresponding to the angular range of the servo motors.</td></tr>
+          <tr><td>SRS-05</td><td>The firmware shall support two operating modes. One mode is a stabilized hold where the current pitch and roll angles are maintained, and the other mode is where a joystick is used sets the desired stabilization angle (and thus the camera position can be controlled from the joystick). The modes can be selected using a mode button.</td></tr>
+          <tr><td>SRS-06</td><td>When the mode select button is held for at least 1 second, the firmware shall level out the platform within 2 seconds.</td></tr>
+          <tr><td>SRS-07</td><td>The stabilization firmware shall reject any disturbances of +/- 15 degrees in the roll or pitch and return the platform to +/- 3 degrees of the requested roll/pitch within 500 ms.</td></tr>
+          <tr><td>SRS-08</td><td>The firmware shall accept wireless commands for pitch, roll, and mode received from ESP32 over UART and update the desired angle settings within 100ms of receiving update.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p>SRS-01 was easy to validate, and we were able to do this through printing out values from the gyroscope to the terminal (which we did so with a lot of their functions).</p>
+    <p>SRS-02 was verified primarily through the code - we manually set values for the stick drift which were substantially over the +/- 5% margin that we set earlier (see the values for JOY_DEADBAND) in joystick.c.</p>
+    <p>SRS-03 was also done through the code. We are able to see this directly in the main.c file, which has a continuous PID control loop and step which is being edited (see the function gimbal_control_step being implemented in a while(1) loop).</p>
+    <p>For SRS-04, we are able to also see this implementation of PWM signals to the motors being done in main.c. We can look at OCR1A and OCR1B to see the PWM being set for the servo motors.</p>
+    <p>For SRS-05, we made a relatively big edit. We changed it such that there was a mode for the gimbal's functionality being on and a mode for the gimbal's functionality being off. Check the boolean variable gimbaling in main.c as well as the flip. The joystick would be used to change the set point around which the gimbal would be able to do its stabilizaation.</p>
+    <p>For SRS-06, this was also changed because the button was now used as a means of turning the gimbal stabilization on or off.</p>
+    <p>For SRS-07, we were able to hardcode what we wanted the range of stabilization to look like, which is present in main.c.</p>
+    <p>Finally, the software for SRS-08 also changed. Getting the wireless commands for pitch and roll over UART were very challenging, so instead we utilized a Flask web server with consistent GET and POST methods to store the mode of operation. This was much easier than utilizing UART.</p>
+
+    <h4>4.2 Validated SRS Commands</h4>
+    <p>In this section, we choose to validate these two commands:</p>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>ID</th><th>Description</th></tr></thead>
+        <tbody>
+          <tr><td>SRS-04</td><td>The firmware shall generate the PWM signals for the two servo motors with PWM ranges from 1 ms to 2 ms, corresponding to the angular range of the servo motors.</td></tr>
+          <tr><td>SRS-05</td><td>The firmware shall support two operating modes. One mode is a stabilized hold where the current pitch and roll angles are maintained, and the other mode is where a joystick is used sets the desired stabilization angle (and thus the camera position can be controlled from the joystick). The modes can be selected using a mode button.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p>We validated SRS-04 by connecting the ATMega328PB's PWM output for the pitch motor directly to an oscilloscope, and measuring the +width of the resulting wave. Images of this reading are included below, showing a minimum PWM pulse of approximately 1ms and a maximum of approximately 2ms, correspondning to negative and positive rotation from the setpoint.</p>
+    <div class="img-grid">
+      <img src="image/README/Final%20Images/IMG_1428.jpeg" alt="Oscilloscope PWM Reading 1">
+      <img src="image/README/Final%20Images/notblurry.jpeg" alt="Oscilloscope PWM Reading 2">
+    </div>
+
+    <p>We validated SRS-05 through manual testing. This is demonstrated in the demo video, where the button is pressed in the beginning to deactivate the gimbaling, and is then pressed to reactivate it, causing the camera to jump back to the stabilized state. Additionally, in the enabled state, the joystick can be used to adjust the setpoint (and thus position) of the camera.</p>
+
+    <h3>5. Hardware Requirements Specification (HRS) Validation and Results</h3>
+    <p>For a refresher, here are what our initial HRS ideas were:</p>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>ID</th><th>Description</th></tr></thead>
+        <tbody>
+          <tr><td>HRS-01</td><td>The system shall use two servos each providing at least 1.8 kg-cm of torque.</td></tr>
+          <tr><td>HRS-02</td><td>The mechanical frame shall provide two independent rotational axes (roll and pitch) with at least +/- 30 degrees of rotation on each axis.</td></tr>
+          <tr><td>HRS-03</td><td>An IMU shall communicate with ATmega328PB over I2C to provide 16-bit acceleration and gyroscope data.</td></tr>
+          <tr><td>HRS-04</td><td>The balanced platform shall support a camera of at least 30 grams without degraded performance.</td></tr>
+          <tr><td>HRS-05</td><td>The system shall be powered by 5 AA batteries with a regulated 5V rail for logic components and shall operate for at least 30 minutes.</td></tr>
+          <tr><td>HRS-06</td><td>The joystick shall provide two analog voltage output readable by the ATmega328PB ADC channels. A separate button shall control mode switches.</td></tr>
+          <tr><td>HRS-07</td><td>The system shall support an ESP32 with 5V supply communicating with ATmega328PB over UART.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p><strong>HRS-01:</strong> We also weren't able to directly verfiy that the servo motors exert a certain amount of torque through a physical measurement tool. However, we measured the supplied voltage to the servo motors and based off their data sheet determined the supplied torque expected at a supply voltage of 6V far exceeds our minimum requirement.</p>
+    <p><strong>HRS-02:</strong> We also used a protractor to measure the performance of the PD stabilization and were easily able to acheive 90 degrees of rotation in each direction, far exceeding our HRS.</p>
+    <p><strong>HRS-03:</strong> We have also verified that the ATmega communicates over I2C with the IMU as we can visibly validate that the system keeps the platform level. We tested with a logic analyzer to verify that the packets were 16 bits in a similar process to WS3.</p>
+    <p><strong>HRS-04:</strong> To verify our weight requirement we simply used a camera that exceeded 30 grams and ensured functionality. Our GoPro that demonstrated functionality was over 100 grams.</p>
+    <p><strong>HRS-05:</strong> This hardware requirement was slightly modified as we chose to use a 7.4 V nominal Li-Po battery to power our motors so that enough current could be supplied for a fast response. We also added a 5V usb-c battery pack to power the Atmega. We did aim to run the whole system off of one battery supply but time constraints got in the way of a more elegant power delivery system as we later had to add a DC-DC converter to step down to 6V to meet the requirements of our replacement motors. We later walked around and filmed about 40 minutes of video with gimbal active, reaching the 30 minute requirement.</p>
+    <p><strong>HRS-06:</strong> In our demo video, we highlighted complete functionality for both pitch and roll with our joystick. The joystick works with a deadband to prevent stickdrift and fully functions to adjust pitch and roll. This is implemented through two ADC channels.</p>
+    <p><strong>HRS-07:</strong> We demonstrated IoT functinoality in our demo video with the ESP32 actively being powered off of our 5V battery pack.</p>
+
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>ID</th><th>Description</th><th>Validation Outcome</th></tr></thead>
+        <tbody>
+          <tr>
+            <td>HRS-02</td>
+            <td>The mechanical frame shall provide two independent rotational axes (roll and pitch) with at least +/- 30 degrees of rotation on each axis.</td>
+            <td>Confirmed, mechanical frame supports functional stabilization to +/- 90 degrees for each axis. Images below show validation using a straight edge to estimate 90 degrees of rotation on mechanical assembly.</td>
+          </tr>
+          <tr>
+            <td>HRS-04</td>
+            <td>The balanced platform shall support a camera of at least 30 grams without degraded performance.</td>
+            <td>Confirmed, gimbal system supports go pro weighing 141 grams without degraded performance. Demo video demonstrates full functionality with go pro and image below shows recording of go pro weight.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p>To valitade HRS-02, we originally planned on using a protractor to masure the angular range of the pitch and roll axes. However, due to an inability to find a protractor and the exceeding performance of our mechanical design, we simply used a straight edge to showcase that the assembly could rotate approximately 90 degrees in each direction for both pitch and roll as demonstrated by the 4 images below.</p>
+    <div class="img-row">
+      <img src="image/README/1777345830702.jpg" alt="HRS-02 Rotation 1">
+      <img src="image/README/1777345838924.jpg" alt="HRS-02 Rotation 2">
+      <img src="image/README/1777345849268.jpg" alt="HRS-02 Rotation 3">
+      <img src="image/README/1777345855751.jpg" alt="HRS-02 Rotation 4">
+    </div>
+
+    <p>To validate HRS-04 we demonstrated full functionality in our demo video with a GoPro camera that exceeded our minimum weight requirement of 30 grams. In the image below we weigh the GoPro used, showing it to be 141grams.</p>
+    <div class="img-single"><img src="image/README/1777345931214.jpg" alt="GoPro Weight Validation" style="max-width:480px;"></div>
+
+    <h3>6. Conclusion</h3>
+    <p>Ultimately we learned a lot as a group. We learned a lot about mechanical prototyping using CAD, writing drivers for external sensors, and even some basic web development through the implementation of a Flask web server. We think that the overall hardware-software integration of the project was good. As a whole, the project is a surprisingly usable product that can be used well from both a hardware and software perspective. We are proud of implementing out first complex CAD design, as well as implementing a lot of code for the IMU driver and the PID algorithm. We learned a lot about budgeting our time and planning out our work for engineering projects. With so many moving pieces, we learned a lot about being able to compartmentalize tasks in order to reach our overall end goal. We had to change our approach with the mechnical prototyping multiple times. We constantly messed up and printed pieces that didn't exactly fit what we were looking for or fit with out existing components. In the future, we will look to order parts earlier. One of the biggest obstacles we didn't anticipate was the difficulty in getting the Flask server to coordinate with the ESP-32 and subsequent Arduino code. It was challenging to make both the hardware and software communicate with each other bidrectionally, and we are proud of the way we ended up getting the Flask/ESP32 coordination to work out. The next step for this project is to tune the PID algorithm better and then create a more concrete mechanical enclosure for all the parts. As of right now, the boards and wires hang out, which is not ideal for a truly working product.</p>
+
+    <h3>References</h3>
+    <ul>
+      <li>I2C Setup (WS3: Serial)</li>
+      <li>Joystick Setup (Lab 4: Pong)</li>
+    </ul>
+  </section>
+
+</div><!-- /container -->
+
+<footer>
+  <p>B.A.T.R.A. &mdash; Team 11 &mdash; Penn Engineering &bull;
+    <a href="https://github.com/upenn-embedded/final-project-s26-t11">GitHub</a>
+  </p>
+</footer>
+
+</body>
+</html>
