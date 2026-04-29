@@ -14,7 +14,7 @@
 
 **GitHub Repository URL: [https://github.com/upenn-embedded/final-project-s26-t11](https://github.com/upenn-embedded/final-project-s26-t11)**
 
-**GitHub Pages Website URL: **[https://upenn-embedded.github.io/final-project-s26-t11/](https://upenn-embedded.github.io/final-project-s26-t11/)**
+**GitHub Pages Website URL: [https://upenn-embedded.github.io/final-project-s26-t11/](https://upenn-embedded.github.io/final-project-s26-t11/)**
 
 Hey Graders! The Final Project Reflection and Submission is at the bottom of this document.
 
